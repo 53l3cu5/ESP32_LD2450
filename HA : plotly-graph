@@ -1,0 +1,140 @@
+type: custom:plotly-graph
+title: LD2450
+refresh_interval: 2
+hours_to_show: current_day
+ha_theme: true
+layout:
+  legend:
+    'y': 6000
+    orientation: h
+  autosize: true
+  margin:
+    autoexpand: true
+    l: 50
+    r: 20
+    t: 20
+    b: 40
+  showlegend: true
+  xaxis:
+    dtick: 1000
+    gridcolor: RGBA(200,200,200,0.15)
+    zerolinecolor: RGBA(200,200,200,0.15)
+    type: number
+    fixedrange: true
+    range:
+      - -5000
+      - 5000
+  yaxis:
+    dtick: 1000
+    gridcolor: RGBA(200,200,200,0.15)
+    zerolinecolor: RGBA(200,200,200,0.15)
+    scaleanchor: x
+    scaleratio: 1
+    fixedrange: true
+    range:
+      - 6000
+      - 0
+entities:
+  - entity: ''
+    name: Person1
+    show_value: true
+    unit_of_measurement: mm
+    marker:
+      size: 12
+    line:
+      shape: spline
+      width: 5
+    x:
+      - $ex hass.states["sensor.esp_presence_hzs_target1_x"].state
+    'y':
+      - $ex hass.states["sensor.esp_presence_hzs_target1_y"].state
+  - entity: ''
+    name: Person2
+    show_value: true
+    unit_of_measurement: mm
+    marker:
+      size: 12
+    line:
+      shape: spline
+      width: 5
+    x:
+      - $ex hass.states["sensor.esp_presence_hzs_target2_x"].state
+    'y':
+      - $ex hass.states["sensor.esp_presence_hzs_target2_y"].state
+  - entity: ''
+    name: Person3
+    show_value: true
+    unit_of_measurement: mm
+    marker:
+      size: 12
+    line:
+      shape: spline
+      width: 5
+    x:
+      - $ex hass.states["sensor.esp_presence_hzs_target3_x"].state
+    'y':
+      - $ex hass.states["sensor.esp_presence_hzs_target3_y"].state
+  - entity: ''
+    name: Zone1
+    mode: lines
+    fill: toself
+    fillcolor: RGBA(20,200,0,0.1)
+    line:
+      color: RGBA(20,200,0,0.2)
+      shape: line
+      width: 2
+    x:
+      - $ex hass.states["number.esp_presence_hzs_zone1_x_begin"].state
+      - $ex hass.states["number.esp_presence_hzs_zone1_x_begin"].state
+      - $ex hass.states["number.esp_presence_hzs_zone1_x_end"].state
+      - $ex hass.states["number.esp_presence_hzs_zone1_x_end"].state
+      - $ex hass.states["number.esp_presence_hzs_zone1_x_begin"].state
+    'y':
+      - $ex hass.states["number.esp_presence_hzs_zone1_y_begin"].state
+      - $ex hass.states["number.esp_presence_hzs_zone1_y_end"].state
+      - $ex hass.states["number.esp_presence_hzs_zone1_y_end"].state
+      - $ex hass.states["number.esp_presence_hzs_zone1_y_begin"].state
+      - $ex hass.states["number.esp_presence_hzs_zone1_y_begin"].state
+  - entity: ''
+    name: Zone2
+    mode: lines
+    fill: toself
+    fillcolor: RGBA(200,0,255,0.1)
+    line:
+      color: RGBA(200,0,255,0.2)
+      shape: line
+      width: 2
+    x:
+      - $ex hass.states["number.esp_presence_hzs_zone2_x_begin"].state
+      - $ex hass.states["number.esp_presence_hzs_zone2_x_begin"].state
+      - $ex hass.states["number.esp_presence_hzs_zone2_x_end"].state
+      - $ex hass.states["number.esp_presence_hzs_zone2_x_end"].state
+      - $ex hass.states["number.esp_presence_hzs_zone2_x_begin"].state
+    'y':
+      - $ex hass.states["number.esp_presence_hzs_zone2_y_begin"].state
+      - $ex hass.states["number.esp_presence_hzs_zone2_y_end"].state
+      - $ex hass.states["number.esp_presence_hzs_zone2_y_end"].state
+      - $ex hass.states["number.esp_presence_hzs_zone2_y_begin"].state
+      - $ex hass.states["number.esp_presence_hzs_zone2_y_begin"].state
+  - entity: ''
+    name: Zone3
+    mode: lines
+    fill: toself
+    fillcolor: RGBA(200,120,55,0.1)
+    line:
+      color: RGBA(200,120,55,0.2)
+      shape: line
+      width: 2
+    x:
+      - $ex hass.states["number.esp_presence_hzs_zone3_x_begin"].state
+      - $ex hass.states["number.esp_presence_hzs_zone3_x_begin"].state
+      - $ex hass.states["number.esp_presence_hzs_zone3_x_end"].state
+      - $ex hass.states["number.esp_presence_hzs_zone3_x_end"].state
+      - $ex hass.states["number.esp_presence_hzs_zone3_x_begin"].state
+    'y':
+      - $ex hass.states["number.esp_presence_hzs_zone3_y_begin"].state
+      - $ex hass.states["number.esp_presence_hzs_zone3_y_end"].state
+      - $ex hass.states["number.esp_presence_hzs_zone3_y_end"].state
+      - $ex hass.states["number.esp_presence_hzs_zone3_y_begin"].state
+      - $ex hass.states["number.esp_presence_hzs_zone3_y_begin"].state
+raw_plotly_config: true
