@@ -1,16 +1,19 @@
 #https://github.com/Emile86/HLK-2450/blob/main/2450.yaml
 #https://community.home-assistant.io/t/hlk-ld2450-initial-experiments-to-connect-to-homeassistant/578878/185?page=10
+substitutions:
+  devicename: hpsz-room
+  
+#ESP32/LD2450 : Human Presence Sensor by Zone
 esphome:
-  name: esp-presence-hzs
-  comment: Human Zone Sensor 
-  friendly_name: esp-presence-HZS
+  name: $devicename
+  comment: Human Presence Zone Sensor (ESP32/LD2450)
   #name_add_mac_suffix: True
   platformio_options:
     board_build.flash_mode: dio
     # board_build.f_cpu: 80000000L
   project: 
-    name: 53l3cu5.Human_Presence_Sensor_Only_By_Zone
-    version: 1.O
+    name: 53l3cu5.Human_Presence_Sensor_by_Zone
+    version: 2.O
   on_boot:
     - priority: -200
       then:
@@ -18,17 +21,15 @@ esphome:
           id(zone1_target_exsits).publish_state(false);
           id(zone2_target_exsits).publish_state(false);
           id(zone3_target_exsits).publish_state(false);
+          id(zone4_target_exsits).publish_state(false);
+          id(zone5_target_exsits).publish_state(false);
+          id(zone6_target_exsits).publish_state(false);
           id(zone_ex1_target_exsits).publish_state(false);
+          id(zone_ex2_target_exsits).publish_state(false);
+          id(zone_ex3_target_exsits).publish_state(false);
 
 preferences:
     flash_write_interval: 5s
-
-# external_components:
-  # - source:
-      # type: git
-      # url: https://github.com/screekworkshop/custom_components_support_for_screek_2a
-      # ref: main
-    # components: [esp32, uart]
   
 
 esp32:
@@ -61,7 +62,7 @@ debug:
 
 api:
   encryption:
-    key: "M/ue0TrySVQijNEQz8IWk7zFioYySI5DhBfCeZ7HhdY="
+    key: "Xd8KczJ8qKVYtAjyh3zVPar7zF8pkmZeOpnHSfjOqwA="
 ota:
   # use your own ota password plz. this is a words by Socrates.
   password: !secret ota_password
@@ -70,22 +71,17 @@ ota:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
-   # Optional manual IP
-  # manual_ip:
-  #   static_ip: 192.168.1.151
-  #   gateway: 192.168.1.254
-  #   subnet: 255.255.255.0
   power_save_mode: LIGHT
   reboot_timeout: 10min
   ap:
-    ssid: "HUMAN-ZONE-SENSOR"
+    ssid: "${devicename} Hotspot"
+    password: !secret hotspot_password
 
 captive_portal:
 
 web_server:
   port: 80
-
-
+  
 text_sensor:
   - platform: debug
     reset_reason:
@@ -124,6 +120,27 @@ text_sensor:
     id: tips_zone3_conf
     icon: mdi:information-outline
     entity_category: config
+  - platform: template
+    name: "Zone4 Info"
+    id: tips_zone4_conf
+    icon: mdi:information-outline
+    entity_category: config
+    lambda: |-
+      return {"Configure below" };
+    update_interval: 1000s
+  - platform: template
+    name: "Zone5 Info"
+    id: tips_zone5_conf
+    icon: mdi:information-outline
+    entity_category: config
+    lambda: |-
+      return {"Configure below" };
+    update_interval: 1000s
+  - platform: template
+    name: "Zone6 Info"
+    id: tips_zone6_conf
+    icon: mdi:information-outline
+    entity_category: config
     lambda: |-
       return {"Configure below" };
     update_interval: 1000s
@@ -134,6 +151,22 @@ text_sensor:
     entity_category: config
     lambda: |-
       return {"Zone Exclusion 1" };
+    update_interval: 1000s
+  - platform: template
+    name: "Zout2 Info"
+    id: tips_zone_ex2_conf
+    icon: mdi:information-outline
+    entity_category: config
+    lambda: |-
+      return {"Zone Exclusion 2" };
+    update_interval: 1000s
+  - platform: template
+    name: "Zout3 Info"
+    id: tips_zone_ex3_conf
+    icon: mdi:information-outline
+    entity_category: config
+    lambda: |-
+      return {"Zone Exclusion 3" };
     update_interval: 1000s
   - platform: template
     name: "Any-Presence Info"
@@ -225,6 +258,49 @@ number:
     optimistic: True
     initial_value: 0
     restore_value: True
+  - platform: template
+    name: "Zone4 Timeout"
+    id: zone4_x_timeout
+    min_value: 0
+    max_value: 600
+    mode: box
+    device_class: duration
+    entity_category: config
+    unit_of_measurement: s
+    icon: mdi:timer-off
+    step: 1
+    optimistic: True
+    initial_value: 0
+    restore_value: True
+  - platform: template
+    name: "Zone5 Timeout"
+    id: zone5_x_timeout
+    min_value: 0
+    max_value: 600
+    mode: box
+    device_class: duration
+    entity_category: config
+    unit_of_measurement: s
+    icon: mdi:timer-off
+    step: 1
+    optimistic: True
+    initial_value: 0
+    restore_value: True
+  - platform: template
+    name: "Zone6 Timeout"
+    id: zone6_x_timeout
+    min_value: 0
+    max_value: 600
+    mode: box
+    device_class: duration
+    entity_category: config
+    unit_of_measurement: s
+    icon: mdi:timer-off
+    step: 1
+    optimistic: True
+    initial_value: 0
+    restore_value: True
+    
   # Zone 1
   - platform: template
     name: Zone1 X-Begin
@@ -294,7 +370,7 @@ number:
     on_value: 
       then:
         - script.execute: check_zone1_vaild
-  
+    
   # Zone 2
   - platform: template
     name: Zone2 X-Begin
@@ -364,7 +440,7 @@ number:
     on_value: 
       then:
         - script.execute: check_zone2_vaild
-
+    
   # Zone 3
   - platform: template
     name: Zone3 X-Begin
@@ -434,7 +510,217 @@ number:
     on_value: 
       then:
         - script.execute: check_zone3_vaild
-  
+    
+  # Zone 4
+  - platform: template
+    name: Zone4 X-Begin
+    id: zone4_x_begin
+    min_value: -4000
+    max_value: 4000
+    mode: box
+    device_class: distance
+    entity_category: config
+    unit_of_measurement: mm
+    icon: mdi:arrow-left-bold
+    step: 10
+    optimistic: True
+    initial_value: 0
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone4_vaild
+  - platform: template
+    name: Zone4 X-End
+    id: zone4_x_end
+    mode: box
+    min_value: -4000
+    max_value: 4000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone4_vaild
+  - platform: template
+    name: Zone4 Y-Begin
+    id: zone4_y_begin
+    mode: box
+    min_value: 0
+    max_value: 6000
+    device_class: distance
+    entity_category: config
+    icon: mdi:arrow-up-bold
+    unit_of_measurement: mm
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone4_vaild
+  - platform: template
+    name: Zone4 Y-End
+    id: zone4_y_end
+    icon: mdi:arrow-down-bold
+    mode: box
+    min_value: 0
+    max_value: 6000
+    initial_value: 0
+    entity_category: config
+    device_class: distance
+    unit_of_measurement: mm
+    step: 10
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone4_vaild
+    
+  # Zone 5
+  - platform: template
+    name: Zone5 X-Begin
+    id: zone5_x_begin
+    min_value: -4000
+    max_value: 4000
+    mode: box
+    device_class: distance
+    entity_category: config
+    unit_of_measurement: mm
+    icon: mdi:arrow-left-bold
+    step: 10
+    optimistic: True
+    initial_value: 0
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone5_vaild
+  - platform: template
+    name: Zone5 X-End
+    id: zone5_x_end
+    mode: box
+    min_value: -4000
+    max_value: 4000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone5_vaild
+  - platform: template
+    name: Zone5 Y-Begin
+    id: zone5_y_begin
+    mode: box
+    min_value: 0
+    max_value: 6000
+    device_class: distance
+    entity_category: config
+    icon: mdi:arrow-up-bold
+    unit_of_measurement: mm
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone5_vaild
+  - platform: template
+    name: Zone5 Y-End
+    id: zone5_y_end
+    icon: mdi:arrow-down-bold
+    mode: box
+    min_value: 0
+    max_value: 6000
+    initial_value: 0
+    entity_category: config
+    device_class: distance
+    unit_of_measurement: mm
+    step: 10
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone5_vaild
+    
+  # Zone 6
+  - platform: template
+    name: Zone6 X-Begin
+    id: zone6_x_begin
+    min_value: -4000
+    max_value: 4000
+    mode: box
+    device_class: distance
+    entity_category: config
+    unit_of_measurement: mm
+    icon: mdi:arrow-left-bold
+    step: 10
+    optimistic: True
+    initial_value: 0
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone6_vaild
+  - platform: template
+    name: Zone6 X-End
+    id: zone6_x_end
+    mode: box
+    min_value: -4000
+    max_value: 4000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone6_vaild
+  - platform: template
+    name: Zone6 Y-Begin
+    id: zone6_y_begin
+    mode: box
+    min_value: 0
+    max_value: 6000
+    device_class: distance
+    entity_category: config
+    icon: mdi:arrow-up-bold
+    unit_of_measurement: mm
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone6_vaild
+  - platform: template
+    name: Zone6 Y-End
+    id: zone6_y_end
+    icon: mdi:arrow-down-bold
+    mode: box
+    min_value: 0
+    max_value: 6000
+    initial_value: 0
+    entity_category: config
+    device_class: distance
+    unit_of_measurement: mm
+    step: 10
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone6_vaild
+    
   # Zout1
   - platform: template
     name: Zout1 X-Begin
@@ -504,6 +790,146 @@ number:
     on_value: 
       then:
         - script.execute: check_zout1_vaild
+    
+  # Zout2
+  - platform: template
+    name: Zout2 X-Begin
+    id: zone_ex2_x_begin
+    min_value: -4000
+    max_value: 4000
+    mode: box
+    device_class: distance
+    entity_category: config
+    unit_of_measurement: mm
+    icon: mdi:arrow-left-bold
+    step: 10
+    optimistic: True
+    initial_value: 0
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zout2_vaild
+  - platform: template
+    name: Zout2 X-End
+    id: zone_ex2_x_end
+    mode: box
+    min_value: -4000
+    max_value: 4000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zout2_vaild
+  - platform: template
+    name: Zout2 Y-Begin
+    id: zone_ex2_y_begin
+    mode: box
+    min_value: 0
+    max_value: 6000
+    device_class: distance
+    entity_category: config
+    icon: mdi:arrow-up-bold
+    unit_of_measurement: mm
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zout2_vaild
+  - platform: template
+    name: Zout2 Y-End
+    id: zone_ex2_y_end
+    icon: mdi:arrow-down-bold
+    mode: box
+    min_value: 0
+    max_value: 6000
+    initial_value: 0
+    entity_category: config
+    device_class: distance
+    unit_of_measurement: mm
+    step: 10
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zout2_vaild
+    
+  # Zout3
+  - platform: template
+    name: Zout3 X-Begin
+    id: zone_ex3_x_begin
+    min_value: -4000
+    max_value: 4000
+    mode: box
+    device_class: distance
+    entity_category: config
+    unit_of_measurement: mm
+    icon: mdi:arrow-left-bold
+    step: 10
+    optimistic: True
+    initial_value: 0
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zout3_vaild
+  - platform: template
+    name: Zout3 X-End
+    id: zone_ex3_x_end
+    mode: box
+    min_value: -4000
+    max_value: 4000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zout3_vaild
+  - platform: template
+    name: Zout3 Y-Begin
+    id: zone_ex3_y_begin
+    mode: box
+    min_value: 0
+    max_value: 6000
+    device_class: distance
+    entity_category: config
+    icon: mdi:arrow-up-bold
+    unit_of_measurement: mm
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zout3_vaild
+  - platform: template
+    name: Zout3 Y-End
+    id: zone_ex3_y_end
+    icon: mdi:arrow-down-bold
+    mode: box
+    min_value: 0
+    max_value: 6000
+    initial_value: 0
+    entity_category: config
+    device_class: distance
+    unit_of_measurement: mm
+    step: 10
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zout3_vaild
 
 binary_sensor:
   - platform: status
@@ -550,8 +976,48 @@ binary_sensor:
           }
           return id(zone3_x_timeout).state * 1000.0;
   - platform: template
+    name: "Zone4 Presence"
+    id: zone4_target_exsits
+    device_class: occupancy
+    filters:
+      - delayed_off: !lambda |-
+          if (!id(init_zone_publish) || !id(zone_fn_enable).state) {
+            return 0;
+          }
+          return id(zone4_x_timeout).state * 1000.0;
+  - platform: template
+    name: "Zone5 Presence"
+    id: zone5_target_exsits
+    device_class: occupancy
+    filters:
+      - delayed_off: !lambda |-
+          if (!id(init_zone_publish) || !id(zone_fn_enable).state) {
+            return 0;
+          }
+          return id(zone5_x_timeout).state * 1000.0;
+  - platform: template
+    name: "Zone6 Presence"
+    id: zone6_target_exsits
+    device_class: occupancy
+    filters:
+      - delayed_off: !lambda |-
+          if (!id(init_zone_publish) || !id(zone_fn_enable).state) {
+            return 0;
+          }
+          return id(zone6_x_timeout).state * 1000.0;
+  - platform: template
     name: "Zout1 Presence"
     id: zone_ex1_target_exsits
+    icon: mdi:account-multiple-remove
+    device_class: occupancy
+  - platform: template
+    name: "Zout2 Presence"
+    id: zone_ex2_target_exsits
+    icon: mdi:account-multiple-remove
+    device_class: occupancy
+  - platform: template
+    name: "Zout3 Presence"
+    id: zone_ex3_target_exsits
     icon: mdi:account-multiple-remove
     device_class: occupancy
 
@@ -622,6 +1088,72 @@ script:
           char combined[80]; 
           sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
           id(tips_zone3_conf).publish_state(combined);
+  - id: check_zone4_vaild
+    then:
+      - lambda: |-
+          if (id(zone4_x_begin).state > id(zone4_x_end).state){
+            id(tips_zone4_conf).publish_state("Err: X-Begin > X-End");
+            return;
+          }
+          if (id(zone4_y_begin).state > id(zone4_y_end).state){
+            id(tips_zone4_conf).publish_state("Err: Y-Begin > Y-End");
+            return;
+          }
+          if (id(zone4_x_begin).state == 0 && id(zone4_x_end).state == 0 && id(zone4_y_begin).state == 0 && id(zone4_y_end).state == 0){
+            id(tips_zone4_conf).publish_state("Configure below");
+            return;
+          }
+
+          int x_size = id(zone4_x_end).state - id(zone4_x_begin).state;
+          int y_size = id(zone4_y_end).state - id(zone4_y_begin).state;
+
+          char combined[80]; 
+          sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
+          id(tips_zone4_conf).publish_state(combined);
+  - id: check_zone5_vaild
+    then:
+      - lambda: |-
+          if (id(zone5_x_begin).state > id(zone5_x_end).state){
+            id(tips_zone5_conf).publish_state("Err: X-Begin > X-End");
+            return;
+          }
+          if (id(zone5_y_begin).state > id(zone5_y_end).state){
+            id(tips_zone5_conf).publish_state("Err: Y-Begin > Y-End");
+            return;
+          }
+          if (id(zone5_x_begin).state == 0 && id(zone5_x_end).state == 0 && id(zone5_y_begin).state == 0 && id(zone5_y_end).state == 0){
+            id(tips_zone5_conf).publish_state("Configure below");
+            return;
+          }
+
+          int x_size = id(zone5_x_end).state - id(zone5_x_begin).state;
+          int y_size = id(zone5_y_end).state - id(zone5_y_begin).state;
+
+          char combined[80]; 
+          sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
+          id(tips_zone5_conf).publish_state(combined);
+  - id: check_zone6_vaild
+    then:
+      - lambda: |-
+          if (id(zone6_x_begin).state > id(zone6_x_end).state){
+            id(tips_zone6_conf).publish_state("Err: X-Begin > X-End");
+            return;
+          }
+          if (id(zone6_y_begin).state > id(zone6_y_end).state){
+            id(tips_zone6_conf).publish_state("Err: Y-Begin > Y-End");
+            return;
+          }
+          if (id(zone6_x_begin).state == 0 && id(zone6_x_end).state == 0 && id(zone6_y_begin).state == 0 && id(zone6_y_end).state == 0){
+            id(tips_zone6_conf).publish_state("Configure below");
+            return;
+          }
+
+          int x_size = id(zone6_x_end).state - id(zone6_x_begin).state;
+          int y_size = id(zone6_y_end).state - id(zone6_y_begin).state;
+
+          char combined[80]; 
+          sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
+          id(tips_zone6_conf).publish_state(combined);
   - id: check_zout1_vaild
     then:
       - lambda: |-
@@ -635,6 +1167,32 @@ script:
           }
           id(tips_zone_ex1_conf).publish_state("Zone Exclusion 1");
 
+  - id: check_zout2_vaild
+    then:
+      - lambda: |-
+          if (id(zone_ex2_x_begin).state > id(zone_ex2_x_end).state){
+            id(tips_zone_ex2_conf).publish_state("Err: X-Begin > X-End");
+            return;
+          }
+          if (id(zone_ex2_y_begin).state > id(zone_ex2_y_end).state){
+            id(tips_zone_ex2_conf).publish_state("Err: Y-Begin > Y-End");
+            return;
+          }
+          id(tips_zone_ex2_conf).publish_state("Zone Exclusion 2");
+
+  - id: check_zout3_vaild
+    then:
+      - lambda: |-
+          if (id(zone_ex3_x_begin).state > id(zone_ex3_x_end).state){
+            id(tips_zone_ex3_conf).publish_state("Err: X-Begin > X-End");
+            return;
+          }
+          if (id(zone_ex3_y_begin).state > id(zone_ex3_y_end).state){
+            id(tips_zone_ex3_conf).publish_state("Err: Y-Begin > Y-End");
+            return;
+          }
+          id(tips_zone_ex3_conf).publish_state("Zone Exclusion 3");
+
 sensor:
   - platform: uptime
     name: ESP Uptime
@@ -646,8 +1204,8 @@ sensor:
     id: wifi_signal_db
     update_interval: 60s
     entity_category: "diagnostic"
-
-  #-------------------------------------#
+    
+#-------------------------------------#
   # Advanced radar data
   - platform: template
     name: "All Target Counts"
@@ -674,8 +1232,38 @@ sensor:
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
+    name: "Zone4 Target Counts"
+    id: zone4_target_count
+    accuracy_decimals: 0
+    icon: "mdi:counter"
+    unit_of_measurement: "targets"
+  - platform: template
+    name: "Zone5 Target Counts"
+    id: zone5_target_count
+    accuracy_decimals: 0
+    icon: "mdi:counter"
+    unit_of_measurement: "targets"
+  - platform: template
+    name: "Zone6 Target Counts"
+    id: zone6_target_count
+    accuracy_decimals: 0
+    icon: "mdi:counter"
+    unit_of_measurement: "targets"
+  - platform: template
     name: "Zout1 Target Counts"
     id: zone_ex1_target_count
+    accuracy_decimals: 0
+    icon: mdi:account-multiple-minus-outline
+    unit_of_measurement: "targets"
+  - platform: template
+    name: "Zout2 Target Counts"
+    id: zone_ex2_target_count
+    accuracy_decimals: 0
+    icon: mdi:account-multiple-minus-outline
+    unit_of_measurement: "targets"
+  - platform: template
+    name: "Zout3 Target Counts"
+    id: zone_ex3_target_count
     accuracy_decimals: 0
     icon: mdi:account-multiple-minus-outline
     unit_of_measurement: "targets"
@@ -829,6 +1417,20 @@ switch:
     entity_category: config
     restore_mode: RESTORE_DEFAULT_OFF
   - platform: template
+    name: Zout2 Enable
+    id: zone_ex2_enable
+    optimistic: True
+    icon: mdi:account-cancel
+    entity_category: config
+    restore_mode: RESTORE_DEFAULT_OFF
+  - platform: template
+    name: Zout3 Enable
+    id: zone_ex3_enable
+    optimistic: True
+    icon: mdi:account-cancel
+    entity_category: config
+    restore_mode: RESTORE_DEFAULT_OFF
+  - platform: template
     name: Target Enable
     id: target_fn_enable
     optimistic: True
@@ -962,6 +1564,12 @@ uart:
           bool p2_vaild = (p2_x != 0 || p2_y > 0);
           bool p3_vaild = (p3_x != 0 || p3_y > 0);
 
+          // Zones exludes
+
+          bool p1_zone_ex_enter = false;
+          bool p2_zone_ex_enter = false;
+          bool p3_zone_ex_enter = false;
+          
           // zone exlude 1
 
           int16_t target_count_in_zone_ex1 = 0;
@@ -970,10 +1578,6 @@ uart:
           int16_t zone_ex1_x_max = id(zone_ex1_x_end).state;
           int16_t zone_ex1_y_min = id(zone_ex1_y_begin).state;
           int16_t zone_ex1_y_max = id(zone_ex1_y_end).state;
-
-          bool p1_zone_ex_enter = false;
-          bool p2_zone_ex_enter = false;
-          bool p3_zone_ex_enter = false;
 
           if (id(zone_ex1_enable).state){
             if (p1_vaild){
@@ -998,6 +1602,72 @@ uart:
 
           bool has_target_in_zone_ex1 = (target_count_in_zone_ex1 > 0);
           
+          // zone exlude 2
+
+          int16_t target_count_in_zone_ex2 = 0;
+
+          int16_t zone_ex2_x_min = id(zone_ex2_x_begin).state;
+          int16_t zone_ex2_x_max = id(zone_ex2_x_end).state;
+          int16_t zone_ex2_y_min = id(zone_ex2_y_begin).state;
+          int16_t zone_ex2_y_max = id(zone_ex2_y_end).state;
+
+          if (id(zone_ex2_enable).state){
+            if (p1_vaild){
+              if (p1_x >= zone_ex2_x_min && p1_x <= zone_ex2_x_max && p1_y >= zone_ex2_y_min && p1_y <= zone_ex2_y_max){
+                  p1_zone_ex_enter = true;
+                  target_count_in_zone_ex2 ++;
+              }
+            }
+            if (p2_vaild){
+              if (p2_x >= zone_ex2_x_min && p2_x <= zone_ex2_x_max && p2_y >= zone_ex2_y_min && p2_y <= zone_ex2_y_max){
+                  p2_zone_ex_enter = true;
+                  target_count_in_zone_ex2 ++;
+              }
+            }
+            if (p3_vaild){
+              if (p3_x >= zone_ex2_x_min && p3_x <= zone_ex2_x_max && p3_y >= zone_ex2_y_min && p3_y <= zone_ex2_y_max){
+                  p3_zone_ex_enter = true;
+                  target_count_in_zone_ex2 ++;
+              }
+            }
+          }
+
+          bool has_target_in_zone_ex2 = (target_count_in_zone_ex2 > 0);
+          
+          // zone exlude 3
+
+          int16_t target_count_in_zone_ex3 = 0;
+
+          int16_t zone_ex3_x_min = id(zone_ex3_x_begin).state;
+          int16_t zone_ex3_x_max = id(zone_ex3_x_end).state;
+          int16_t zone_ex3_y_min = id(zone_ex3_y_begin).state;
+          int16_t zone_ex3_y_max = id(zone_ex3_y_end).state;
+
+          if (id(zone_ex3_enable).state){
+            if (p1_vaild){
+              if (p1_x >= zone_ex3_x_min && p1_x <= zone_ex3_x_max && p1_y >= zone_ex3_y_min && p1_y <= zone_ex3_y_max){
+                  p1_zone_ex_enter = true;
+                  target_count_in_zone_ex3 ++;
+              }
+            }
+            if (p2_vaild){
+              if (p2_x >= zone_ex3_x_min && p2_x <= zone_ex3_x_max && p2_y >= zone_ex3_y_min && p2_y <= zone_ex3_y_max){
+                  p2_zone_ex_enter = true;
+                  target_count_in_zone_ex3 ++;
+              }
+            }
+            if (p3_vaild){
+              if (p3_x >= zone_ex3_x_min && p3_x <= zone_ex3_x_max && p3_y >= zone_ex3_y_min && p3_y <= zone_ex3_y_max){
+                  p3_zone_ex_enter = true;
+                  target_count_in_zone_ex3 ++;
+              }
+            }
+          }
+
+          bool has_target_in_zone_ex3 = (target_count_in_zone_ex3 > 0);
+
+          // all targets
+
           int16_t all_target_counts = 0;
           if (p1_vaild && !p1_zone_ex_enter){
             all_target_counts ++;
@@ -1011,6 +1681,8 @@ uart:
 
           bool has_target_in_zone_all = (all_target_counts > 0);
 
+          // zones check
+
           int16_t target_count_in_zone1 = 0;
           bool has_target_in_zone1 = false;
 
@@ -1019,6 +1691,15 @@ uart:
 
           int16_t target_count_in_zone3 = 0;
           bool has_target_in_zone3 = false;
+
+          int16_t target_count_in_zone4 = 0;
+          bool has_target_in_zone4 = false;
+
+          int16_t target_count_in_zone5 = 0;
+          bool has_target_in_zone5 = false;
+
+          int16_t target_count_in_zone6 = 0;
+          bool has_target_in_zone6 = false;
 
           if (id(zone_fn_enable).state){
 
@@ -1094,6 +1775,79 @@ uart:
               }
             }
             has_target_in_zone3 = (target_count_in_zone3 > 0);
+
+            // zone 4 check
+
+            int16_t zone4_x_min = id(zone4_x_begin).state;
+            int16_t zone4_x_max = id(zone4_x_end).state;
+            int16_t zone4_y_min = id(zone4_y_begin).state;
+            int16_t zone4_y_max = id(zone4_y_end).state;
+
+            if (p1_vaild && !p1_zone_ex_enter){
+              if (p1_x >= zone4_x_min && p1_x <= zone4_x_max && p1_y >= zone4_y_min && p1_y <= zone4_y_max){
+                  target_count_in_zone4 ++;
+              }
+            }
+            if (p2_vaild && !p2_zone_ex_enter){
+              if (p2_x >= zone4_x_min && p2_x <= zone4_x_max && p2_y >= zone4_y_min && p2_y <= zone4_y_max){
+                  target_count_in_zone4 ++;
+              }
+            }
+            if (p3_vaild && !p3_zone_ex_enter){
+              if (p3_x >= zone4_x_min && p3_x <= zone4_x_max && p3_y >= zone4_y_min && p3_y <= zone4_y_max){
+                  target_count_in_zone4 ++;
+              }
+            }
+            has_target_in_zone4 = (target_count_in_zone4 > 0);
+
+            // zone 5 check
+
+            int16_t zone5_x_min = id(zone5_x_begin).state;
+            int16_t zone5_x_max = id(zone5_x_end).state;
+            int16_t zone5_y_min = id(zone5_y_begin).state;
+            int16_t zone5_y_max = id(zone5_y_end).state;
+
+            if (p1_vaild && !p1_zone_ex_enter){
+              if (p1_x >= zone5_x_min && p1_x <= zone5_x_max && p1_y >= zone5_y_min && p1_y <= zone5_y_max){
+                  target_count_in_zone5 ++;
+              }
+            }
+            if (p2_vaild && !p2_zone_ex_enter){
+              if (p2_x >= zone5_x_min && p2_x <= zone5_x_max && p2_y >= zone5_y_min && p2_y <= zone5_y_max){
+                  target_count_in_zone5 ++;
+              }
+            }
+            if (p3_vaild && !p3_zone_ex_enter){
+              if (p3_x >= zone5_x_min && p3_x <= zone5_x_max && p3_y >= zone5_y_min && p3_y <= zone5_y_max){
+                  target_count_in_zone5 ++;
+              }
+            }
+
+            has_target_in_zone5 = (target_count_in_zone5 > 0);
+
+            // zone 6 check
+
+            int16_t zone6_x_min = id(zone6_x_begin).state;
+            int16_t zone6_x_max = id(zone6_x_end).state;
+            int16_t zone6_y_min = id(zone6_y_begin).state;
+            int16_t zone6_y_max = id(zone6_y_end).state;
+
+            if (p1_vaild && !p1_zone_ex_enter){
+              if (p1_x >= zone6_x_min && p1_x <= zone6_x_max && p1_y >= zone6_y_min && p1_y <= zone6_y_max){
+                  target_count_in_zone6 ++;
+              }
+            }
+            if (p2_vaild && !p2_zone_ex_enter){
+              if (p2_x >= zone6_x_min && p2_x <= zone6_x_max && p2_y >= zone6_y_min && p2_y <= zone6_y_max){
+                  target_count_in_zone6 ++;
+              }
+            }
+            if (p3_vaild && !p3_zone_ex_enter){
+              if (p3_x >= zone6_x_min && p3_x <= zone6_x_max && p3_y >= zone6_y_min && p3_y <= zone6_y_max){
+                  target_count_in_zone6 ++;
+              }
+            }
+            has_target_in_zone6 = (target_count_in_zone6 > 0);
 
           }
 
@@ -1264,14 +2018,48 @@ uart:
           }else if (id(zone3_target_exsits).state != has_target_in_zone3){
             id(zone3_target_exsits).publish_state(has_target_in_zone3);
           }
+
+          if (id(zone4_target_count).state != target_count_in_zone4){
+            id(zone4_target_count).publish_state(target_count_in_zone4);
+            id(zone4_target_exsits).publish_state(has_target_in_zone4);
+          }else if (id(zone4_target_exsits).state != has_target_in_zone4){
+            id(zone4_target_exsits).publish_state(has_target_in_zone4);
+          }
+
+          if (id(zone5_target_count).state != target_count_in_zone5){
+            id(zone5_target_count).publish_state(target_count_in_zone5);
+            id(zone5_target_exsits).publish_state(has_target_in_zone5);
+          }else if (id(zone5_target_exsits).state != has_target_in_zone5){
+            id(zone5_target_exsits).publish_state(has_target_in_zone5);
+          }
+
+          if (id(zone6_target_count).state != target_count_in_zone6){
+            id(zone6_target_count).publish_state(target_count_in_zone6);
+            id(zone6_target_exsits).publish_state(has_target_in_zone6);
+          }else if (id(zone6_target_exsits).state != has_target_in_zone6){
+            id(zone6_target_exsits).publish_state(has_target_in_zone6);
+          }
           
           // zout
           if (id(zone_ex1_target_count).state != target_count_in_zone_ex1){
             id(zone_ex1_target_count).publish_state(target_count_in_zone_ex1);
           }
-
           if (id(zone_ex1_target_exsits).state != has_target_in_zone_ex1){
             id(zone_ex1_target_exsits).publish_state(has_target_in_zone_ex1);
+          }
+          
+          if (id(zone_ex2_target_count).state != target_count_in_zone_ex2){
+            id(zone_ex2_target_count).publish_state(target_count_in_zone_ex2);
+          }
+          if (id(zone_ex2_target_exsits).state != has_target_in_zone_ex2){
+            id(zone_ex2_target_exsits).publish_state(has_target_in_zone_ex2);
+          }
+          
+          if (id(zone_ex3_target_count).state != target_count_in_zone_ex3){
+            id(zone_ex3_target_count).publish_state(target_count_in_zone_ex3);
+          }
+          if (id(zone_ex3_target_exsits).state != has_target_in_zone_ex3){
+            id(zone_ex3_target_exsits).publish_state(has_target_in_zone_ex3);
           }
 
           if (!id(init_zone_publish)){
