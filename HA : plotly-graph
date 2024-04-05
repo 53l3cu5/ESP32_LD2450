@@ -5,7 +5,7 @@ hours_to_show: current_day
 ha_theme: true
 layout:
   legend:
-    'y': 6000
+    'y': 8000
     orientation: h
   autosize: true
   margin:
@@ -22,8 +22,8 @@ layout:
     type: number
     fixedrange: true
     range:
-      - -5000
-      - 5000
+      - -4000
+      - 4000
   yaxis:
     dtick: 1000
     gridcolor: RGBA(200,200,200,0.15)
@@ -32,7 +32,7 @@ layout:
     scaleratio: 1
     fixedrange: true
     range:
-      - 6000
+      - 8000
       - 0
 entities:
   - entity: ''
@@ -45,9 +45,9 @@ entities:
       shape: spline
       width: 5
     x:
-      - $ex hass.states["sensor.esp_presence_hzs_target1_x"].state
+      - $ex hass.states["sensor.target1_x"].state
     'y':
-      - $ex hass.states["sensor.esp_presence_hzs_target1_y"].state
+      - $ex hass.states["sensor.target1_y"].state
   - entity: ''
     name: Person2
     show_value: true
@@ -58,9 +58,9 @@ entities:
       shape: spline
       width: 5
     x:
-      - $ex hass.states["sensor.esp_presence_hzs_target2_x"].state
+      - $ex hass.states["sensor.target2_x"].state
     'y':
-      - $ex hass.states["sensor.esp_presence_hzs_target2_y"].state
+      - $ex hass.states["sensor.target2_y"].state
   - entity: ''
     name: Person3
     show_value: true
@@ -71,70 +71,239 @@ entities:
       shape: spline
       width: 5
     x:
-      - $ex hass.states["sensor.esp_presence_hzs_target3_x"].state
+      - $ex hass.states["sensor.target3_x"].state
     'y':
-      - $ex hass.states["sensor.esp_presence_hzs_target3_y"].state
+      - $ex hass.states["sensor.target3_y"].state
   - entity: ''
     name: Zone1
     mode: lines
     fill: toself
     fillcolor: RGBA(20,200,0,0.1)
     line:
-      color: RGBA(20,200,0,0.2)
+      color: RGBA(20,200,0,0.4)
       shape: line
       width: 2
     x:
-      - $ex hass.states["number.esp_presence_hzs_zone1_x_begin"].state
-      - $ex hass.states["number.esp_presence_hzs_zone1_x_begin"].state
-      - $ex hass.states["number.esp_presence_hzs_zone1_x_end"].state
-      - $ex hass.states["number.esp_presence_hzs_zone1_x_end"].state
-      - $ex hass.states["number.esp_presence_hzs_zone1_x_begin"].state
+      - $ex hass.states["number.zone1_x_begin"].state
+      - $ex hass.states["number.zone1_x_begin"].state
+      - $ex hass.states["number.zone1_x_end"].state
+      - $ex hass.states["number.zone1_x_end"].state
+      - $ex hass.states["number.zone1_x_begin"].state
     'y':
-      - $ex hass.states["number.esp_presence_hzs_zone1_y_begin"].state
-      - $ex hass.states["number.esp_presence_hzs_zone1_y_end"].state
-      - $ex hass.states["number.esp_presence_hzs_zone1_y_end"].state
-      - $ex hass.states["number.esp_presence_hzs_zone1_y_begin"].state
-      - $ex hass.states["number.esp_presence_hzs_zone1_y_begin"].state
+      - $ex hass.states["number.zone1_y_begin"].state
+      - $ex hass.states["number.zone1_y_end"].state
+      - $ex hass.states["number.zone1_y_end"].state
+      - $ex hass.states["number.zone1_y_begin"].state
+      - $ex hass.states["number.zone1_y_begin"].state
   - entity: ''
     name: Zone2
     mode: lines
     fill: toself
-    fillcolor: RGBA(200,0,255,0.1)
+    fillcolor: RGBA(255,233,107,0.1)
     line:
-      color: RGBA(200,0,255,0.2)
+      color: RGBA(255,233,107,0.4)
       shape: line
       width: 2
     x:
-      - $ex hass.states["number.esp_presence_hzs_zone2_x_begin"].state
-      - $ex hass.states["number.esp_presence_hzs_zone2_x_begin"].state
-      - $ex hass.states["number.esp_presence_hzs_zone2_x_end"].state
-      - $ex hass.states["number.esp_presence_hzs_zone2_x_end"].state
-      - $ex hass.states["number.esp_presence_hzs_zone2_x_begin"].state
+      - $ex hass.states["number.zone2_x_begin"].state
+      - $ex hass.states["number.zone2_x_begin"].state
+      - $ex hass.states["number.zone2_x_end"].state
+      - $ex hass.states["number.zone2_x_end"].state
+      - $ex hass.states["number.zone2_x_begin"].state
     'y':
-      - $ex hass.states["number.esp_presence_hzs_zone2_y_begin"].state
-      - $ex hass.states["number.esp_presence_hzs_zone2_y_end"].state
-      - $ex hass.states["number.esp_presence_hzs_zone2_y_end"].state
-      - $ex hass.states["number.esp_presence_hzs_zone2_y_begin"].state
-      - $ex hass.states["number.esp_presence_hzs_zone2_y_begin"].state
+      - $ex hass.states["number.zone2_y_begin"].state
+      - $ex hass.states["number.zone2_y_end"].state
+      - $ex hass.states["number.zone2_y_end"].state
+      - $ex hass.states["number.zone2_y_begin"].state
+      - $ex hass.states["number.zone2_y_begin"].state
   - entity: ''
     name: Zone3
     mode: lines
     fill: toself
-    fillcolor: RGBA(200,120,55,0.1)
+    fillcolor: RGBA(0,137,207,0.1)
     line:
-      color: RGBA(200,120,55,0.2)
+      color: RGBA(0,137,207,0.4)
       shape: line
       width: 2
     x:
-      - $ex hass.states["number.esp_presence_hzs_zone3_x_begin"].state
-      - $ex hass.states["number.esp_presence_hzs_zone3_x_begin"].state
-      - $ex hass.states["number.esp_presence_hzs_zone3_x_end"].state
-      - $ex hass.states["number.esp_presence_hzs_zone3_x_end"].state
-      - $ex hass.states["number.esp_presence_hzs_zone3_x_begin"].state
+      - $ex hass.states["number.zone3_x_begin"].state
+      - $ex hass.states["number.zone3_x_begin"].state
+      - $ex hass.states["number.zone3_x_end"].state
+      - $ex hass.states["number.zone3_x_end"].state
+      - $ex hass.states["number.zone3_x_begin"].state
     'y':
-      - $ex hass.states["number.esp_presence_hzs_zone3_y_begin"].state
-      - $ex hass.states["number.esp_presence_hzs_zone3_y_end"].state
-      - $ex hass.states["number.esp_presence_hzs_zone3_y_end"].state
-      - $ex hass.states["number.esp_presence_hzs_zone3_y_begin"].state
-      - $ex hass.states["number.esp_presence_hzs_zone3_y_begin"].state
+      - $ex hass.states["number.zone3_y_begin"].state
+      - $ex hass.states["number.zone3_y_end"].state
+      - $ex hass.states["number.zone3_y_end"].state
+      - $ex hass.states["number.zone3_y_begin"].state
+      - $ex hass.states["number.zone3_y_begin"].state
+  - entity: ''
+    name: Zone4
+    mode: lines
+    fill: toself
+    fillcolor: RGBA(0,169,164,0.1)
+    line:
+      color: RGBA(0,169,164,0.4)
+      shape: line
+      width: 2
+    x:
+      - $ex hass.states["number.zone4_x_begin"].state
+      - $ex hass.states["number.zone4_x_begin"].state
+      - $ex hass.states["number.zone4_x_end"].state
+      - $ex hass.states["number.zone4_x_end"].state
+      - $ex hass.states["number.zone4_x_begin"].state
+    'y':
+      - $ex hass.states["number.zone4_y_begin"].state
+      - $ex hass.states["number.zone4_y_end"].state
+      - $ex hass.states["number.zone4_y_end"].state
+      - $ex hass.states["number.zone4_y_begin"].state
+      - $ex hass.states["number.zone4_y_begin"].state
+  - entity: ''
+    name: Zone5
+    mode: lines
+    fill: toself
+    fillcolor: RGBA(244,143,159,0.1)
+    line:
+      color: RGBA(244,143,159,0.4)
+      shape: line
+      width: 2
+    x:
+      - $ex hass.states["number.zone5_x_begin"].state
+      - $ex hass.states["number.zone5_x_begin"].state
+      - $ex hass.states["number.zone5_x_end"].state
+      - $ex hass.states["number.zone5_x_end"].state
+      - $ex hass.states["number.zone5_x_begin"].state
+    'y':
+      - $ex hass.states["number.zone5_y_begin"].state
+      - $ex hass.states["number.zone5_y_end"].state
+      - $ex hass.states["number.zone5_y_end"].state
+      - $ex hass.states["number.zone5_y_begin"].state
+      - $ex hass.states["number.zone5_y_begin"].state
+  - entity: ''
+    name: Zone6
+    mode: lines
+    fill: toself
+    fillcolor: RGBA(255,194,34,0.1)
+    line:
+      color: RGBA(255,194,34,0.4)
+      shape: line
+      width: 2
+    x:
+      - $ex hass.states["number.zone6_x_begin"].state
+      - $ex hass.states["number.zone6_x_begin"].state
+      - $ex hass.states["number.zone6_x_end"].state
+      - $ex hass.states["number.zone6_x_end"].state
+      - $ex hass.states["number.zone6_x_begin"].state
+    'y':
+      - $ex hass.states["number.zone6_y_begin"].state
+      - $ex hass.states["number.zone6_y_end"].state
+      - $ex hass.states["number.zone6_y_end"].state
+      - $ex hass.states["number.zone6_y_begin"].state
+      - $ex hass.states["number.zone6_y_begin"].state
+  - entity: ''
+    name: Zout1
+    mode: lines
+    fill: toself
+    fillcolor: >-
+      $ex hass.states["switch.zout1_enable"].state == "on" ?
+      "RGBA(238,48,78,0.2)" : "RGBA(0,0,0,0)"
+    line:
+      color: >-
+        $ex hass.states["switch.zout1_enable"].state == "on" ?
+        "RGBA(0,137,207,0.4)" : "RGBA(0,0,0,0)" 
+      width: 3
+      dash: dash
+    x:
+      - $ex hass.states["number.zout1_x_begin"].state
+      - $ex hass.states["number.zout1_x_begin"].state
+      - $ex hass.states["number.zout1_x_end"].state
+      - $ex hass.states["number.zout1_x_end"].state
+      - $ex hass.states["number.zout1_x_begin"].state
+    'y':
+      - $ex hass.states["number.zout1_y_begin"].state
+      - $ex hass.states["number.zout1_y_end"].state
+      - $ex hass.states["number.zout1_y_end"].state
+      - $ex hass.states["number.zout1_y_begin"].state
+      - $ex hass.states["number.zout1_y_begin"].state
+  - entity: ''
+    name: Zout2
+    mode: lines
+    fill: toself
+    fillcolor: >-
+      $ex hass.states["switch.zout2_enable"].state == "on" ?
+      "RGBA(215,11,140,0.2)" : "RGBA(0,0,0,0)" 
+    line:
+      color: >-
+        $ex hass.states["switch.zout2_enable"].state == "on" ?
+        "RGBA(215,11,140, 0.4)" : "RGBA(0,0,0,0)" 
+      width: 3
+      dash: dash
+    x:
+      - $ex hass.states["number.zout2_x_begin"].state
+      - $ex hass.states["number.zout2_x_begin"].state
+      - $ex hass.states["number.zout2_x_end"].state
+      - $ex hass.states["number.zout2_x_end"].state
+      - $ex hass.states["number.zout2_x_begin"].state
+    'y':
+      - $ex hass.states["number.zout2_y_begin"].state
+      - $ex hass.states["number.zout2_y_end"].state
+      - $ex hass.states["number.zout2_y_end"].state
+      - $ex hass.states["number.zout2_y_begin"].state
+      - $ex hass.states["number.zout2_y_begin"].state
+  - entity: ''
+    name: Zout3
+    mode: lines
+    fill: toself
+    fillcolor: >-
+      $ex hass.states["switch.zout2_enable"].state == "on" ?
+      "RGBA(255,48,140,0.2)" : "RGBA(0,0,0,0)" 
+    line:
+      color: >-
+        $ex hass.states["switch.zout2_enable"].state == "on" ?
+        "RGBA(246,140,30,0.4)" : "RGBA(0,0,0,0)" 
+      width: 3
+      dash: dash
+    x:
+      - $ex hass.states["number.zout3_x_begin"].state
+      - $ex hass.states["number.zout3_x_begin"].state
+      - $ex hass.states["number.zout3_x_end"].state
+      - $ex hass.states["number.zout3_x_end"].state
+      - $ex hass.states["number.zout3_x_begin"].state
+    'y':
+      - $ex hass.states["number.zout3_y_begin"].state
+      - $ex hass.states["number.zout3_y_end"].state
+      - $ex hass.states["number.zout3_y_end"].state
+      - $ex hass.states["number.zout3_y_begin"].state
+      - $ex hass.states["number.zout3_y_begin"].state
+  - entity: ''
+    name: Coverage
+    mode: lines
+    line:
+      width: 1
+      color: rgba(100, 100, 100, .6)
+      dash: dot
+    x:
+      - 0
+      - 1000
+      - 3700
+      - 3500
+      - 2000
+      - 0
+      - -2000
+      - -3500
+      - -3700
+      - -1000
+      - 0
+    'y':
+      - 0
+      - 500
+      - 3700
+      - 6000
+      - 7400
+      - 8000
+      - 7400
+      - 6000
+      - 3700
+      - 500
+      - 0
 raw_plotly_config: true
