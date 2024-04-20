@@ -1,12 +1,13 @@
-#https://github.com/Emile86/HLK-2450/blob/main/2450.yaml
-#https://community.home-assistant.io/t/hlk-ld2450-initial-experiments-to-connect-to-homeassistant/578878/185?page=10
+#https://github.com/53l3cu5/ESP32_LD2450
+#https://docs.screek.io/2a
 substitutions:
   devicename: hpsz-room
+  entity_name: "Room"
   
 #ESP32/LD2450 : Human Presence Sensor by Zone
 esphome:
   name: $devicename
-  comment: Human Presence Zone Sensor (ESP32/LD2450)
+  comment: Human Presence Sensor by Zone (ESP32/LD2450)
   #name_add_mac_suffix: True
   platformio_options:
     board_build.flash_mode: dio
@@ -18,16 +19,18 @@ esphome:
     - priority: -200
       then:
         lambda: |-
-          id(zone1_target_exsits).publish_state(false);
-          id(zone2_target_exsits).publish_state(false);
-          id(zone3_target_exsits).publish_state(false);
-          id(zone4_target_exsits).publish_state(false);
-          id(zone5_target_exsits).publish_state(false);
-          id(zone6_target_exsits).publish_state(false);
-          id(zone_ex1_target_exsits).publish_state(false);
-          id(zone_ex2_target_exsits).publish_state(false);
-          id(zone_ex3_target_exsits).publish_state(false);
-
+          id(zone1_target_exist).publish_state(false);
+          id(zone2_target_exist).publish_state(false);
+          id(zone3_target_exist).publish_state(false);
+          id(zone4_target_exist).publish_state(false);
+          id(zone5_target_exist).publish_state(false);
+          id(zone6_target_exist).publish_state(false);
+          id(zone_ex1_target_exist).publish_state(false);
+          id(zone_ex2_target_exist).publish_state(false);
+          id(zone_ex3_target_exist).publish_state(false);
+  includes:
+    - zone.h
+    
 preferences:
     flash_write_interval: 5s
   
@@ -44,14 +47,6 @@ globals:
     type: bool
     restore_value: no
     initial_value: "false"
-  - id: last_illuminance
-    type: float
-    restore_value: no
-    initial_value: "-1"
-  - id: last_illuminance_timestamp
-    type: int
-    restore_value: no
-    initial_value: "-1"
 
 improv_serial:
   
@@ -62,9 +57,12 @@ debug:
 
 api:
   encryption:
+    # use your own encryption key plz.
+    # https://esphome.io/components/api.html?#configuration-variables
     key: "Xd8KczJ8qKVYtAjyh3zVPar7zF8pkmZeOpnHSfjOqwA="
+    
 ota:
-  # use your own ota password plz. this is a words by Socrates.
+  # use your own ota password plz.
   password: !secret ota_password
   safe_mode: False
 
@@ -85,22 +83,22 @@ web_server:
 text_sensor:
   - platform: debug
     reset_reason:
-      name: "ESP Reset Reason"
+      name: "${entity_name} ESP Reset Reason"
       icon: mdi:anchor
       disabled_by_default: True
   - platform: wifi_info
     ip_address:
-      name: ESP IP Address
+      name: ${entity_name} ESP IP Address
       entity_category: "diagnostic"
       disabled_by_default: True
       icon: mdi:ip-network
     mac_address:
-      name: ESP MAC
+      name: ${entity_name} ESP MAC
       entity_category: "diagnostic"
       icon: mdi:ip-network
       disabled_by_default: True
   - platform: template
-    name: "Zone1 Info"
+    name: "${entity_name} Zone1 Info"
     id: tips_zone1_conf
     icon: mdi:information-outline
     entity_category: config
@@ -108,7 +106,7 @@ text_sensor:
       return {"Configure below" };
     update_interval: 1000s
   - platform: template
-    name: "Zone2 Info"
+    name: "${entity_name} Zone2 Info"
     id: tips_zone2_conf
     icon: mdi:information-outline
     entity_category: config
@@ -116,12 +114,12 @@ text_sensor:
       return {"Configure below" };
     update_interval: 1000s
   - platform: template
-    name: "Zone3 Info"
+    name: "${entity_name} Zone3 Info"
     id: tips_zone3_conf
     icon: mdi:information-outline
     entity_category: config
   - platform: template
-    name: "Zone4 Info"
+    name: "${entity_name} Zone4 Info"
     id: tips_zone4_conf
     icon: mdi:information-outline
     entity_category: config
@@ -129,7 +127,7 @@ text_sensor:
       return {"Configure below" };
     update_interval: 1000s
   - platform: template
-    name: "Zone5 Info"
+    name: "${entity_name} Zone5 Info"
     id: tips_zone5_conf
     icon: mdi:information-outline
     entity_category: config
@@ -137,7 +135,7 @@ text_sensor:
       return {"Configure below" };
     update_interval: 1000s
   - platform: template
-    name: "Zone6 Info"
+    name: "${entity_name} Zone6 Info"
     id: tips_zone6_conf
     icon: mdi:information-outline
     entity_category: config
@@ -145,7 +143,7 @@ text_sensor:
       return {"Configure below" };
     update_interval: 1000s
   - platform: template
-    name: "Zout1 Info"
+    name: "${entity_name} Zout1 Info"
     id: tips_zone_ex1_conf
     icon: mdi:information-outline
     entity_category: config
@@ -153,7 +151,7 @@ text_sensor:
       return {"Zone Exclusion 1" };
     update_interval: 1000s
   - platform: template
-    name: "Zout2 Info"
+    name: "${entity_name} Zout2 Info"
     id: tips_zone_ex2_conf
     icon: mdi:information-outline
     entity_category: config
@@ -161,7 +159,7 @@ text_sensor:
       return {"Zone Exclusion 2" };
     update_interval: 1000s
   - platform: template
-    name: "Zout3 Info"
+    name: "${entity_name} Zout3 Info"
     id: tips_zone_ex3_conf
     icon: mdi:information-outline
     entity_category: config
@@ -169,7 +167,7 @@ text_sensor:
       return {"Zone Exclusion 3" };
     update_interval: 1000s
   - platform: template
-    name: "Any-Presence Info"
+    name: "${entity_name} Any-Presence Info"
     id: tips_any_presence_conf
     icon: mdi:information-outline
     entity_category: config
@@ -177,33 +175,47 @@ text_sensor:
       return {"Any Presence Config" };
     update_interval: 1000s
   - platform: template
-    name: "Target1 Direction"
+    name: "${entity_name} Target1 Direction"
     id: target1_direction
     icon: mdi:directions
   - platform: template
-    name: "Target2 Direction"
+    name: "${entity_name} Target2 Direction"
     id: target2_direction
     icon: mdi:directions
   - platform: template
-    name: "Target3 Direction"
+    name: "${entity_name} Target3 Direction"
     id: target3_direction
     icon: mdi:directions
   - platform: template
-    name: "Target1 Position"
+    name: "${entity_name} Target1 Position"
     id: target1_position
     icon: mdi:directions
   - platform: template
-    name: "Target2 Position"
+    name: "${entity_name} Target2 Position"
     id: target2_position
     icon: mdi:directions
   - platform: template
-    name: "Target3 Position"
+    name: "${entity_name} Target3 Position"
     id: target3_position
     icon: mdi:directions
 
 number:
   - platform: template
-    name: "Any Presence Timeout"
+    name: "${entity_name} Angle"
+    id: wall_angle
+    min_value: 0
+    max_value: 90
+    mode: box
+    device_class: duration
+    entity_category: config
+    unit_of_measurement: °
+    icon: mdi:angle-acute
+    step: 1
+    optimistic: True
+    initial_value: 0
+    restore_value: True
+  - platform: template
+    name: "${entity_name} Any Presence Timeout"
     id: any_presence_timeout
     min_value: 0
     max_value: 600
@@ -217,8 +229,8 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "Zone1 Timeout"
-    id: zone1_x_timeout
+    name: "${entity_name} Zone1 Timeout"
+    id: zone1_timeout
     min_value: 0
     max_value: 600
     mode: box
@@ -231,8 +243,8 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "Zone2 Timeout"
-    id: zone2_x_timeout
+    name: "${entity_name} Zone2 Timeout"
+    id: zone2_timeout
     min_value: 0
     max_value: 600
     mode: box
@@ -245,8 +257,8 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "Zone3 Timeout"
-    id: zone3_x_timeout
+    name: "${entity_name} Zone3 Timeout"
+    id: zone3_timeout
     min_value: 0
     max_value: 600
     mode: box
@@ -259,8 +271,8 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "Zone4 Timeout"
-    id: zone4_x_timeout
+    name: "${entity_name} Zone4 Timeout"
+    id: zone4_timeout
     min_value: 0
     max_value: 600
     mode: box
@@ -273,8 +285,8 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "Zone5 Timeout"
-    id: zone5_x_timeout
+    name: "${entity_name} Zone5 Timeout"
+    id: zone5_timeout
     min_value: 0
     max_value: 600
     mode: box
@@ -287,8 +299,8 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "Zone6 Timeout"
-    id: zone6_x_timeout
+    name: "${entity_name} Zone6 Timeout"
+    id: zone6_timeout
     min_value: 0
     max_value: 600
     mode: box
@@ -303,8 +315,8 @@ number:
     
   # Zone 1
   - platform: template
-    name: Zone1 X-Begin
-    id: zone1_x_begin
+    name: ${entity_name} Zone1 X
+    id: zone1_x
     min_value: -4000
     max_value: 4000
     mode: box
@@ -318,30 +330,13 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone1_vaild
+        - script.execute: check_zone1_valide
   - platform: template
-    name: Zone1 X-End
-    id: zone1_x_end
+    name: ${entity_name} Zone1 Y
+    id: zone1_y
     mode: box
-    min_value: -4000
-    max_value: 4000
-    device_class: distance
-    unit_of_measurement: mm
-    entity_category: config
-    icon: mdi:arrow-right-bold
-    step: 10
-    initial_value: 0
-    optimistic: True
-    restore_value: True
-    on_value: 
-      then:
-        - script.execute: check_zone1_vaild
-  - platform: template
-    name: Zone1 Y-Begin
-    id: zone1_y_begin
-    mode: box
-    min_value: 0
-    max_value: 6000
+    min_value: -500
+    max_value: 8000
     device_class: distance
     entity_category: config
     icon: mdi:arrow-up-bold
@@ -352,14 +347,14 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone1_vaild
+        - script.execute: check_zone1_valide
   - platform: template
-    name: Zone1 Y-End
-    id: zone1_y_end
+    name: ${entity_name} Zone1 Height
+    id: zone1_height
     icon: mdi:arrow-down-bold
     mode: box
     min_value: 0
-    max_value: 6000
+    max_value: 8000
     initial_value: 0
     entity_category: config
     device_class: distance
@@ -369,12 +364,29 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone1_vaild
+        - script.execute: check_zone1_valide
+  - platform: template
+    name: ${entity_name} Zone1 Width
+    id: zone1_width
+    mode: box
+    min_value: 0
+    max_value: 8000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone1_valide
     
   # Zone 2
   - platform: template
-    name: Zone2 X-Begin
-    id: zone2_x_begin
+    name: ${entity_name} Zone2 X
+    id: zone2_x
     min_value: -4000
     max_value: 4000
     mode: box
@@ -388,30 +400,13 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone2_vaild
+        - script.execute: check_zone2_valide
   - platform: template
-    name: Zone2 X-End
-    id: zone2_x_end
+    name: ${entity_name} Zone2 Y
+    id: zone2_y
     mode: box
-    min_value: -4000
-    max_value: 4000
-    device_class: distance
-    unit_of_measurement: mm
-    entity_category: config
-    icon: mdi:arrow-right-bold
-    step: 10
-    initial_value: 0
-    optimistic: True
-    restore_value: True
-    on_value: 
-      then:
-        - script.execute: check_zone2_vaild
-  - platform: template
-    name: Zone2 Y-Begin
-    id: zone2_y_begin
-    mode: box
-    min_value: 0
-    max_value: 6000
+    min_value: -500
+    max_value: 8000
     device_class: distance
     entity_category: config
     icon: mdi:arrow-up-bold
@@ -422,14 +417,14 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone2_vaild
+        - script.execute: check_zone2_valide
   - platform: template
-    name: Zone2 Y-End
-    id: zone2_y_end
+    name: ${entity_name} Zone2 Height
+    id: zone2_height
     icon: mdi:arrow-down-bold
     mode: box
     min_value: 0
-    max_value: 6000
+    max_value: 8000
     initial_value: 0
     entity_category: config
     device_class: distance
@@ -439,12 +434,29 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone2_vaild
+        - script.execute: check_zone2_valide
+  - platform: template
+    name: ${entity_name} Zone2 Width
+    id: zone2_width
+    mode: box
+    min_value: 0
+    max_value: 8000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone2_valide
     
   # Zone 3
   - platform: template
-    name: Zone3 X-Begin
-    id: zone3_x_begin
+    name: ${entity_name} Zone3 X
+    id: zone3_x
     min_value: -4000
     max_value: 4000
     mode: box
@@ -458,30 +470,13 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone3_vaild
+        - script.execute: check_zone3_valide
   - platform: template
-    name: Zone3 X-End
-    id: zone3_x_end
+    name: ${entity_name} Zone3 Y
+    id: zone3_y
     mode: box
-    min_value: -4000
-    max_value: 4000
-    device_class: distance
-    unit_of_measurement: mm
-    entity_category: config
-    icon: mdi:arrow-right-bold
-    step: 10
-    initial_value: 0
-    optimistic: True
-    restore_value: True
-    on_value: 
-      then:
-        - script.execute: check_zone3_vaild
-  - platform: template
-    name: Zone3 Y-Begin
-    id: zone3_y_begin
-    mode: box
-    min_value: 0
-    max_value: 6000
+    min_value: -500
+    max_value: 8000
     device_class: distance
     entity_category: config
     icon: mdi:arrow-up-bold
@@ -492,14 +487,14 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone3_vaild
+        - script.execute: check_zone3_valide
   - platform: template
-    name: Zone3 Y-End
-    id: zone3_y_end
+    name: ${entity_name} Zone3 Height
+    id: zone3_height
     icon: mdi:arrow-down-bold
     mode: box
     min_value: 0
-    max_value: 6000
+    max_value: 8000
     initial_value: 0
     entity_category: config
     device_class: distance
@@ -509,12 +504,29 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone3_vaild
+        - script.execute: check_zone3_valide
+  - platform: template
+    name: ${entity_name} Zone3 Width
+    id: zone3_width
+    mode: box
+    min_value: 0
+    max_value: 8000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone3_valide
     
   # Zone 4
   - platform: template
-    name: Zone4 X-Begin
-    id: zone4_x_begin
+    name: ${entity_name} Zone4 X
+    id: zone4_x
     min_value: -4000
     max_value: 4000
     mode: box
@@ -528,30 +540,13 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone4_vaild
+        - script.execute: check_zone4_valide
   - platform: template
-    name: Zone4 X-End
-    id: zone4_x_end
+    name: ${entity_name} Zone4 Y
+    id: zone4_y
     mode: box
-    min_value: -4000
-    max_value: 4000
-    device_class: distance
-    unit_of_measurement: mm
-    entity_category: config
-    icon: mdi:arrow-right-bold
-    step: 10
-    initial_value: 0
-    optimistic: True
-    restore_value: True
-    on_value: 
-      then:
-        - script.execute: check_zone4_vaild
-  - platform: template
-    name: Zone4 Y-Begin
-    id: zone4_y_begin
-    mode: box
-    min_value: 0
-    max_value: 6000
+    min_value: -500
+    max_value: 8000
     device_class: distance
     entity_category: config
     icon: mdi:arrow-up-bold
@@ -562,14 +557,14 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone4_vaild
+        - script.execute: check_zone4_valide
   - platform: template
-    name: Zone4 Y-End
-    id: zone4_y_end
+    name: ${entity_name} Zone4 Height
+    id: zone4_height
     icon: mdi:arrow-down-bold
     mode: box
     min_value: 0
-    max_value: 6000
+    max_value: 8000
     initial_value: 0
     entity_category: config
     device_class: distance
@@ -579,12 +574,29 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone4_vaild
+        - script.execute: check_zone4_valide
+  - platform: template
+    name: ${entity_name} Zone4 Width
+    id: zone4_width
+    mode: box
+    min_value: 0
+    max_value: 8000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone4_valide
     
   # Zone 5
   - platform: template
-    name: Zone5 X-Begin
-    id: zone5_x_begin
+    name: ${entity_name} Zone5 X
+    id: zone5_x
     min_value: -4000
     max_value: 4000
     mode: box
@@ -598,30 +610,13 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone5_vaild
+        - script.execute: check_zone5_valide
   - platform: template
-    name: Zone5 X-End
-    id: zone5_x_end
+    name: ${entity_name} Zone5 Y
+    id: zone5_y
     mode: box
-    min_value: -4000
-    max_value: 4000
-    device_class: distance
-    unit_of_measurement: mm
-    entity_category: config
-    icon: mdi:arrow-right-bold
-    step: 10
-    initial_value: 0
-    optimistic: True
-    restore_value: True
-    on_value: 
-      then:
-        - script.execute: check_zone5_vaild
-  - platform: template
-    name: Zone5 Y-Begin
-    id: zone5_y_begin
-    mode: box
-    min_value: 0
-    max_value: 6000
+    min_value: -500
+    max_value: 8000
     device_class: distance
     entity_category: config
     icon: mdi:arrow-up-bold
@@ -632,14 +627,14 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone5_vaild
+        - script.execute: check_zone5_valide
   - platform: template
-    name: Zone5 Y-End
-    id: zone5_y_end
+    name: ${entity_name} Zone5 Height
+    id: zone5_height
     icon: mdi:arrow-down-bold
     mode: box
     min_value: 0
-    max_value: 6000
+    max_value: 8000
     initial_value: 0
     entity_category: config
     device_class: distance
@@ -649,12 +644,29 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone5_vaild
+        - script.execute: check_zone5_valide
+  - platform: template
+    name: ${entity_name} Zone5 Width
+    id: zone5_width
+    mode: box
+    min_value: 0
+    max_value: 8000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone5_valide
     
   # Zone 6
   - platform: template
-    name: Zone6 X-Begin
-    id: zone6_x_begin
+    name: ${entity_name} Zone6 X
+    id: zone6_x
     min_value: -4000
     max_value: 4000
     mode: box
@@ -668,30 +680,13 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone6_vaild
+        - script.execute: check_zone6_valide
   - platform: template
-    name: Zone6 X-End
-    id: zone6_x_end
+    name: ${entity_name} Zone6 Y
+    id: zone6_y
     mode: box
-    min_value: -4000
-    max_value: 4000
-    device_class: distance
-    unit_of_measurement: mm
-    entity_category: config
-    icon: mdi:arrow-right-bold
-    step: 10
-    initial_value: 0
-    optimistic: True
-    restore_value: True
-    on_value: 
-      then:
-        - script.execute: check_zone6_vaild
-  - platform: template
-    name: Zone6 Y-Begin
-    id: zone6_y_begin
-    mode: box
-    min_value: 0
-    max_value: 6000
+    min_value: -500
+    max_value: 8000
     device_class: distance
     entity_category: config
     icon: mdi:arrow-up-bold
@@ -702,14 +697,14 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone6_vaild
+        - script.execute: check_zone6_valide
   - platform: template
-    name: Zone6 Y-End
-    id: zone6_y_end
+    name: ${entity_name} Zone6 Height
+    id: zone6_height
     icon: mdi:arrow-down-bold
     mode: box
     min_value: 0
-    max_value: 6000
+    max_value: 8000
     initial_value: 0
     entity_category: config
     device_class: distance
@@ -719,12 +714,29 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone6_vaild
+        - script.execute: check_zone6_valide
+  - platform: template
+    name: ${entity_name} Zone6 Width
+    id: zone6_width
+    mode: box
+    min_value: 0
+    max_value: 8000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zone6_valide
     
   # Zout1
   - platform: template
-    name: Zout1 X-Begin
-    id: zone_ex1_x_begin
+    name: ${entity_name} Zout1 X
+    id: zone_ex1_x
     min_value: -4000
     max_value: 4000
     mode: box
@@ -738,30 +750,13 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zout1_vaild
+        - script.execute: check_zout1_valide
   - platform: template
-    name: Zout1 X-End
-    id: zone_ex1_x_end
+    name: ${entity_name} Zout1 Y
+    id: zone_ex1_y
     mode: box
-    min_value: -4000
-    max_value: 4000
-    device_class: distance
-    unit_of_measurement: mm
-    entity_category: config
-    icon: mdi:arrow-right-bold
-    step: 10
-    initial_value: 0
-    optimistic: True
-    restore_value: True
-    on_value: 
-      then:
-        - script.execute: check_zout1_vaild
-  - platform: template
-    name: Zout1 Y-Begin
-    id: zone_ex1_y_begin
-    mode: box
-    min_value: 0
-    max_value: 6000
+    min_value: -500
+    max_value: 8000
     device_class: distance
     entity_category: config
     icon: mdi:arrow-up-bold
@@ -772,14 +767,14 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zout1_vaild
+        - script.execute: check_zout1_valide
   - platform: template
-    name: Zout1 Y-End
-    id: zone_ex1_y_end
+    name: ${entity_name} Zout1 Height
+    id: zone_ex1_height
     icon: mdi:arrow-down-bold
     mode: box
     min_value: 0
-    max_value: 6000
+    max_value: 8000
     initial_value: 0
     entity_category: config
     device_class: distance
@@ -789,12 +784,29 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zout1_vaild
+        - script.execute: check_zout1_valide
+  - platform: template
+    name: ${entity_name} Zout1 Width
+    id: zone_ex1_width
+    mode: box
+    min_value: 0
+    max_value: 8000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zout1_valide
     
   # Zout2
   - platform: template
-    name: Zout2 X-Begin
-    id: zone_ex2_x_begin
+    name: ${entity_name} Zout2 X
+    id: zone_ex2_x
     min_value: -4000
     max_value: 4000
     mode: box
@@ -808,30 +820,13 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zout2_vaild
+        - script.execute: check_zout2_valide
   - platform: template
-    name: Zout2 X-End
-    id: zone_ex2_x_end
+    name: ${entity_name} Zout2 Y
+    id: zone_ex2_y
     mode: box
-    min_value: -4000
-    max_value: 4000
-    device_class: distance
-    unit_of_measurement: mm
-    entity_category: config
-    icon: mdi:arrow-right-bold
-    step: 10
-    initial_value: 0
-    optimistic: True
-    restore_value: True
-    on_value: 
-      then:
-        - script.execute: check_zout2_vaild
-  - platform: template
-    name: Zout2 Y-Begin
-    id: zone_ex2_y_begin
-    mode: box
-    min_value: 0
-    max_value: 6000
+    min_value: -500
+    max_value: 8000
     device_class: distance
     entity_category: config
     icon: mdi:arrow-up-bold
@@ -842,14 +837,14 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zout2_vaild
+        - script.execute: check_zout2_valide
   - platform: template
-    name: Zout2 Y-End
-    id: zone_ex2_y_end
+    name: ${entity_name} Zout2 Height
+    id: zone_ex2_height
     icon: mdi:arrow-down-bold
     mode: box
     min_value: 0
-    max_value: 6000
+    max_value: 8000
     initial_value: 0
     entity_category: config
     device_class: distance
@@ -859,12 +854,29 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zout2_vaild
+        - script.execute: check_zout2_valide
+  - platform: template
+    name: ${entity_name} Zout2 Width
+    id: zone_ex2_width
+    mode: box
+    min_value: 0
+    max_value: 8000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zout2_valide
     
   # Zout3
   - platform: template
-    name: Zout3 X-Begin
-    id: zone_ex3_x_begin
+    name: ${entity_name} Zout3 X
+    id: zone_ex3_x
     min_value: -4000
     max_value: 4000
     mode: box
@@ -878,30 +890,13 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zout3_vaild
+        - script.execute: check_zout3_valide
   - platform: template
-    name: Zout3 X-End
-    id: zone_ex3_x_end
+    name: ${entity_name} Zout3 Y
+    id: zone_ex3_y
     mode: box
-    min_value: -4000
-    max_value: 4000
-    device_class: distance
-    unit_of_measurement: mm
-    entity_category: config
-    icon: mdi:arrow-right-bold
-    step: 10
-    initial_value: 0
-    optimistic: True
-    restore_value: True
-    on_value: 
-      then:
-        - script.execute: check_zout3_vaild
-  - platform: template
-    name: Zout3 Y-Begin
-    id: zone_ex3_y_begin
-    mode: box
-    min_value: 0
-    max_value: 6000
+    min_value: -500
+    max_value: 8000
     device_class: distance
     entity_category: config
     icon: mdi:arrow-up-bold
@@ -912,14 +907,14 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zout3_vaild
+        - script.execute: check_zout3_valide
   - platform: template
-    name: Zout3 Y-End
-    id: zone_ex3_y_end
+    name: ${entity_name} Zout3 Height
+    id: zone_ex3_height
     icon: mdi:arrow-down-bold
     mode: box
     min_value: 0
-    max_value: 6000
+    max_value: 8000
     initial_value: 0
     entity_category: config
     device_class: distance
@@ -929,15 +924,32 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zout3_vaild
+        - script.execute: check_zout3_valide
+  - platform: template
+    name: ${entity_name} Zout3 Width
+    id: zone_ex3_width
+    mode: box
+    min_value: 0
+    max_value: 8000
+    device_class: distance
+    unit_of_measurement: mm
+    entity_category: config
+    icon: mdi:arrow-right-bold
+    step: 10
+    initial_value: 0
+    optimistic: True
+    restore_value: True
+    on_value: 
+      then:
+        - script.execute: check_zout3_valide
 
 binary_sensor:
   - platform: status
-    name: Online
+    name: ${entity_name} Online
     id: ink_ha_connected
   - platform: template
-    name: "Any Presence"
-    id: any_target_exsits
+    name: "${entity_name} Any Presence"
+    id: any_target_exist
     device_class: occupancy
     filters:
       - delayed_off: !lambda |-
@@ -946,261 +958,189 @@ binary_sensor:
           };
           return id(any_presence_timeout).state * 1000.0;
   - platform: template
-    name: "Zone1 Presence"
-    id: zone1_target_exsits
+    name: "${entity_name} Zone1 Presence"
+    id: zone1_target_exist
     device_class: occupancy
     filters:
       - delayed_off: !lambda |-
           if (!id(init_zone_publish) || !id(zone_fn_enable).state) {
             return 0;
           }
-          return id(zone1_x_timeout).state * 1000.0;
+          return id(zone1_timeout).state * 1000.0;
   - platform: template
-    name: "Zone2 Presence"
-    id: zone2_target_exsits
+    name: "${entity_name} Zone2 Presence"
+    id: zone2_target_exist
     device_class: occupancy
     filters:
       - delayed_off: !lambda |-
           if (!id(init_zone_publish) || !id(zone_fn_enable).state) {
             return 0;
           }
-          return id(zone2_x_timeout).state * 1000.0;
+          return id(zone2_timeout).state * 1000.0;
   - platform: template
-    name: "Zone3 Presence"
-    id: zone3_target_exsits
+    name: "${entity_name} Zone3 Presence"
+    id: zone3_target_exist
     device_class: occupancy
     filters:
       - delayed_off: !lambda |-
           if (!id(init_zone_publish) || !id(zone_fn_enable).state) {
             return 0;
           }
-          return id(zone3_x_timeout).state * 1000.0;
+          return id(zone3_timeout).state * 1000.0;
   - platform: template
-    name: "Zone4 Presence"
-    id: zone4_target_exsits
+    name: "${entity_name} Zone4 Presence"
+    id: zone4_target_exist
     device_class: occupancy
     filters:
       - delayed_off: !lambda |-
           if (!id(init_zone_publish) || !id(zone_fn_enable).state) {
             return 0;
           }
-          return id(zone4_x_timeout).state * 1000.0;
+          return id(zone4_timeout).state * 1000.0;
   - platform: template
-    name: "Zone5 Presence"
-    id: zone5_target_exsits
+    name: "${entity_name} Zone5 Presence"
+    id: zone5_target_exist
     device_class: occupancy
     filters:
       - delayed_off: !lambda |-
           if (!id(init_zone_publish) || !id(zone_fn_enable).state) {
             return 0;
           }
-          return id(zone5_x_timeout).state * 1000.0;
+          return id(zone5_timeout).state * 1000.0;
   - platform: template
-    name: "Zone6 Presence"
-    id: zone6_target_exsits
+    name: "${entity_name} Zone6 Presence"
+    id: zone6_target_exist
     device_class: occupancy
     filters:
       - delayed_off: !lambda |-
           if (!id(init_zone_publish) || !id(zone_fn_enable).state) {
             return 0;
           }
-          return id(zone6_x_timeout).state * 1000.0;
+          return id(zone6_timeout).state * 1000.0;
   - platform: template
-    name: "Zout1 Presence"
-    id: zone_ex1_target_exsits
+    name: "${entity_name} Zout1 Presence"
+    id: zone_ex1_target_exist
     icon: mdi:account-multiple-remove
     device_class: occupancy
   - platform: template
-    name: "Zout2 Presence"
-    id: zone_ex2_target_exsits
+    name: "${entity_name} Zout2 Presence"
+    id: zone_ex2_target_exist
     icon: mdi:account-multiple-remove
     device_class: occupancy
   - platform: template
-    name: "Zout3 Presence"
-    id: zone_ex3_target_exsits
+    name: "${entity_name} Zout3 Presence"
+    id: zone_ex3_target_exist
     icon: mdi:account-multiple-remove
     device_class: occupancy
 
 script:
-  - id: check_zone1_vaild
+  - id: check_zone1_valide
     then:
       - lambda: |-
-          if (id(zone1_x_begin).state > id(zone1_x_end).state){
-            id(tips_zone1_conf).publish_state("Err: X-Begin > X-End");
-            return;
-          }
-          if (id(zone1_y_begin).state > id(zone1_y_end).state){
-            id(tips_zone1_conf).publish_state("Err: Y-Begin > Y-End");
-            return;
-          }
-          if (id(zone1_x_begin).state == 0 && id(zone1_x_end).state == 0 && id(zone1_y_begin).state == 0 && id(zone1_y_end).state == 0){
+          if (id(zone1_x).state == 0 && id(zone1_width).state == 0 && id(zone1_y).state == 0 && id(zone1_height).state == 0){
             id(tips_zone1_conf).publish_state("Configure below");
             return;
           }
 
-          int x_size = id(zone1_x_end).state - id(zone1_x_begin).state;
-          int y_size = id(zone1_y_end).state - id(zone1_y_begin).state;
+          int x_size = id(zone1_width).state;
+          int y_size = id(zone1_height).state;
 
           char combined[80]; 
           sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
           id(tips_zone1_conf).publish_state(combined);
-  - id: check_zone2_vaild
+  - id: check_zone2_valide
     then:
       - lambda: |-
-          if (id(zone2_x_begin).state > id(zone2_x_end).state){
-            id(tips_zone2_conf).publish_state("Err: X-Begin > X-End");
-            return;
-          }
-          if (id(zone2_y_begin).state > id(zone2_y_end).state){
-            id(tips_zone2_conf).publish_state("Err: Y-Begin > Y-End");
-            return;
-          }
-          if (id(zone2_x_begin).state == 0 && id(zone2_x_end).state == 0 && id(zone2_y_begin).state == 0 && id(zone2_y_end).state == 0){
+          if (id(zone2_x).state == 0 && id(zone2_width).state == 0 && id(zone2_y).state == 0 && id(zone2_height).state == 0){
             id(tips_zone2_conf).publish_state("Configure below");
             return;
           }
 
-          int x_size = id(zone2_x_end).state - id(zone2_x_begin).state;
-          int y_size = id(zone2_y_end).state - id(zone2_y_begin).state;
+          int x_size = id(zone2_width).state;
+          int y_size = id(zone2_height).state;
 
           char combined[80]; 
           sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
           id(tips_zone2_conf).publish_state(combined);
-  - id: check_zone3_vaild
+  - id: check_zone3_valide
     then:
       - lambda: |-
-          if (id(zone3_x_begin).state > id(zone3_x_end).state){
-            id(tips_zone3_conf).publish_state("Err: X-Begin > X-End");
-            return;
-          }
-          if (id(zone3_y_begin).state > id(zone3_y_end).state){
-            id(tips_zone3_conf).publish_state("Err: Y-Begin > Y-End");
-            return;
-          }
-          if (id(zone3_x_begin).state == 0 && id(zone3_x_end).state == 0 && id(zone3_y_begin).state == 0 && id(zone3_y_end).state == 0){
+          if (id(zone3_x).state == 0 && id(zone3_width).state == 0 && id(zone3_y).state == 0 && id(zone3_height).state == 0){
             id(tips_zone3_conf).publish_state("Configure below");
             return;
           }
 
-          int x_size = id(zone3_x_end).state - id(zone3_x_begin).state;
-          int y_size = id(zone3_y_end).state - id(zone3_y_begin).state;
+          int x_size = id(zone3_width).state;
+          int y_size = id(zone3_height).state ;
 
           char combined[80]; 
           sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
           id(tips_zone3_conf).publish_state(combined);
-  - id: check_zone4_vaild
+  - id: check_zone4_valide
     then:
       - lambda: |-
-          if (id(zone4_x_begin).state > id(zone4_x_end).state){
-            id(tips_zone4_conf).publish_state("Err: X-Begin > X-End");
-            return;
-          }
-          if (id(zone4_y_begin).state > id(zone4_y_end).state){
-            id(tips_zone4_conf).publish_state("Err: Y-Begin > Y-End");
-            return;
-          }
-          if (id(zone4_x_begin).state == 0 && id(zone4_x_end).state == 0 && id(zone4_y_begin).state == 0 && id(zone4_y_end).state == 0){
+          if (id(zone4_x).state == 0 && id(zone4_width).state == 0 && id(zone4_y).state == 0 && id(zone4_height).state == 0){
             id(tips_zone4_conf).publish_state("Configure below");
             return;
           }
 
-          int x_size = id(zone4_x_end).state - id(zone4_x_begin).state;
-          int y_size = id(zone4_y_end).state - id(zone4_y_begin).state;
+          int x_size = id(zone4_width).state;
+          int y_size = id(zone4_height).state;
 
           char combined[80]; 
           sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
           id(tips_zone4_conf).publish_state(combined);
-  - id: check_zone5_vaild
+  - id: check_zone5_valide
     then:
       - lambda: |-
-          if (id(zone5_x_begin).state > id(zone5_x_end).state){
-            id(tips_zone5_conf).publish_state("Err: X-Begin > X-End");
-            return;
-          }
-          if (id(zone5_y_begin).state > id(zone5_y_end).state){
-            id(tips_zone5_conf).publish_state("Err: Y-Begin > Y-End");
-            return;
-          }
-          if (id(zone5_x_begin).state == 0 && id(zone5_x_end).state == 0 && id(zone5_y_begin).state == 0 && id(zone5_y_end).state == 0){
+          if (id(zone5_x).state == 0 && id(zone5_width).state == 0 && id(zone5_y).state == 0 && id(zone5_height).state == 0){
             id(tips_zone5_conf).publish_state("Configure below");
             return;
           }
 
-          int x_size = id(zone5_x_end).state - id(zone5_x_begin).state;
-          int y_size = id(zone5_y_end).state - id(zone5_y_begin).state;
+          int x_size = id(zone5_width).state;
+          int y_size = id(zone5_height).state;
 
           char combined[80]; 
           sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
           id(tips_zone5_conf).publish_state(combined);
-  - id: check_zone6_vaild
+  - id: check_zone6_valide
     then:
       - lambda: |-
-          if (id(zone6_x_begin).state > id(zone6_x_end).state){
-            id(tips_zone6_conf).publish_state("Err: X-Begin > X-End");
-            return;
-          }
-          if (id(zone6_y_begin).state > id(zone6_y_end).state){
-            id(tips_zone6_conf).publish_state("Err: Y-Begin > Y-End");
-            return;
-          }
-          if (id(zone6_x_begin).state == 0 && id(zone6_x_end).state == 0 && id(zone6_y_begin).state == 0 && id(zone6_y_end).state == 0){
+          if (id(zone6_x).state == 0 && id(zone6_width).state == 0 && id(zone6_y).state == 0 && id(zone6_height).state == 0){
             id(tips_zone6_conf).publish_state("Configure below");
             return;
           }
 
-          int x_size = id(zone6_x_end).state - id(zone6_x_begin).state;
-          int y_size = id(zone6_y_end).state - id(zone6_y_begin).state;
+          int x_size = id(zone6_width).state;
+          int y_size = id(zone6_height).state;
 
           char combined[80]; 
           sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
           id(tips_zone6_conf).publish_state(combined);
-  - id: check_zout1_vaild
+  - id: check_zout1_valide
     then:
       - lambda: |-
-          if (id(zone_ex1_x_begin).state > id(zone_ex1_x_end).state){
-            id(tips_zone_ex1_conf).publish_state("Err: X-Begin > X-End");
-            return;
-          }
-          if (id(zone_ex1_y_begin).state > id(zone_ex1_y_end).state){
-            id(tips_zone_ex1_conf).publish_state("Err: Y-Begin > Y-End");
-            return;
-          }
           id(tips_zone_ex1_conf).publish_state("Zone Exclusion 1");
 
-  - id: check_zout2_vaild
+  - id: check_zout2_valide
     then:
       - lambda: |-
-          if (id(zone_ex2_x_begin).state > id(zone_ex2_x_end).state){
-            id(tips_zone_ex2_conf).publish_state("Err: X-Begin > X-End");
-            return;
-          }
-          if (id(zone_ex2_y_begin).state > id(zone_ex2_y_end).state){
-            id(tips_zone_ex2_conf).publish_state("Err: Y-Begin > Y-End");
-            return;
-          }
           id(tips_zone_ex2_conf).publish_state("Zone Exclusion 2");
 
-  - id: check_zout3_vaild
+  - id: check_zout3_valide
     then:
       - lambda: |-
-          if (id(zone_ex3_x_begin).state > id(zone_ex3_x_end).state){
-            id(tips_zone_ex3_conf).publish_state("Err: X-Begin > X-End");
-            return;
-          }
-          if (id(zone_ex3_y_begin).state > id(zone_ex3_y_end).state){
-            id(tips_zone_ex3_conf).publish_state("Err: Y-Begin > Y-End");
-            return;
-          }
           id(tips_zone_ex3_conf).publish_state("Zone Exclusion 3");
 
 sensor:
   - platform: uptime
-    name: ESP Uptime
+    name: ${entity_name} ESP Uptime
     id: sys_uptime
     update_interval: 60s
     disabled_by_default: True
   - platform: wifi_signal 
-    name: RSSI
+    name: ${entity_name} RSSI
     id: wifi_signal_db
     update_interval: 60s
     entity_category: "diagnostic"
@@ -1208,61 +1148,61 @@ sensor:
 #-------------------------------------#
   # Advanced radar data
   - platform: template
-    name: "All Target Counts"
+    name: "${entity_name} All Target Counts"
     id: all_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "Zone1 Target Counts"
+    name: "${entity_name} Zone1 Target Counts"
     id: zone1_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "Zone2 Target Counts"
+    name: "${entity_name} Zone2 Target Counts"
     id: zone2_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "Zone3 Target Counts"
+    name: "${entity_name} Zone3 Target Counts"
     id: zone3_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "Zone4 Target Counts"
+    name: "${entity_name} Zone4 Target Counts"
     id: zone4_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "Zone5 Target Counts"
+    name: "${entity_name} Zone5 Target Counts"
     id: zone5_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "Zone6 Target Counts"
+    name: "${entity_name} Zone6 Target Counts"
     id: zone6_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "Zout1 Target Counts"
+    name: "${entity_name} Zout1 Target Counts"
     id: zone_ex1_target_count
     accuracy_decimals: 0
     icon: mdi:account-multiple-minus-outline
     unit_of_measurement: "targets"
   - platform: template
-    name: "Zout2 Target Counts"
+    name: "${entity_name} Zout2 Target Counts"
     id: zone_ex2_target_count
     accuracy_decimals: 0
     icon: mdi:account-multiple-minus-outline
     unit_of_measurement: "targets"
   - platform: template
-    name: "Zout3 Target Counts"
+    name: "${entity_name} Zout3 Target Counts"
     id: zone_ex3_target_count
     accuracy_decimals: 0
     icon: mdi:account-multiple-minus-outline
@@ -1270,7 +1210,7 @@ sensor:
 
   # Target 1
   - platform: template
-    name: "Target1 X"
+    name: "${entity_name} Target1 X"
     id: target1_x
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1278,7 +1218,7 @@ sensor:
     icon: mdi:focus-field-horizontal
     device_class: distance
   - platform: template
-    name: "Target1 Y"
+    name: "${entity_name} Target1 Y"
     id: target1_y
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1286,14 +1226,14 @@ sensor:
     device_class: distance
     icon: mdi:focus-field-vertical
   - platform: template
-    name: "Target1 Speed"
+    name: "${entity_name} Target1 Speed"
     id: target1_speed
     accuracy_decimals: 2
     unit_of_measurement: 'm/s'
     state_class: measurement
     device_class: speed
   - platform: template
-    name: "Target1 Resolution"
+    name: "${entity_name} Target1 Resolution"
     id: target1_resolution
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1302,7 +1242,7 @@ sensor:
   
   # Target 2
   - platform: template
-    name: "Target2 X"
+    name: "${entity_name} Target2 X"
     id: target2_x
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1310,7 +1250,7 @@ sensor:
     device_class: distance
     icon: mdi:focus-field-horizontal
   - platform: template
-    name: "Target2 Y"
+    name: "${entity_name} Target2 Y"
     id: target2_y
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1318,14 +1258,14 @@ sensor:
     device_class: distance
     icon: mdi:focus-field-vertical
   - platform: template
-    name: "Target2 Speed"
+    name: "${entity_name} Target2 Speed"
     id: target2_speed
     accuracy_decimals: 0
     unit_of_measurement: 'm/s'
     state_class: measurement
     device_class: speed
   - platform: template
-    name: "Target2 Resolution"
+    name: "${entity_name} Target2 Resolution"
     id: target2_resolution
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1334,7 +1274,7 @@ sensor:
 
   # Target 3
   - platform: template
-    name: "Target3 X"
+    name: "${entity_name} Target3 X"
     id: target3_x
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1342,7 +1282,7 @@ sensor:
     device_class: distance
     icon: mdi:focus-field-horizontal
   - platform: template
-    name: "Target3 Y"
+    name: "${entity_name} Target3 Y"
     id: target3_y
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1350,33 +1290,33 @@ sensor:
     device_class: distance
     icon: mdi:focus-field-vertical
   - platform: template
-    name: "Target3 Speed"
+    name: "${entity_name} Target3 Speed"
     id: target3_speed
     accuracy_decimals: 0
     unit_of_measurement: 'm/s'
     state_class: measurement
     device_class: speed
   - platform: template
-    name: "Target3 Resolution"
+    name: "${entity_name} Target3 Resolution"
     id: target3_resolution
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
     state_class: measurement
     device_class: distance
   - platform: template
-    name: "Target1 Angle"
+    name: "${entity_name} Target1 Angle"
     id: target1_angle
     unit_of_measurement: 'º'
     accuracy_decimals: 1
     icon: mdi:angle-acute
   - platform: template
-    name: "Target2 Angle"
+    name: "${entity_name} Target2 Angle"
     id: target2_angle
     accuracy_decimals: 1
     unit_of_measurement: 'º'
     icon: mdi:angle-acute
   - platform: template
-    name: "Target3 Angle"
+    name: "${entity_name} Target3 Angle"
     id: target3_angle
     accuracy_decimals: 1
     unit_of_measurement: 'º'
@@ -1384,12 +1324,12 @@ sensor:
 
 light:
   - platform: status_led
-    name: sys_status
+    name: ${entity_name} sys_status
     pin: GPIO13
     internal: True
     restore_mode: ALWAYS_OFF
   - platform: binary
-    name: "Red Info Light"
+    name: "${entity_name} Red Info Light"
     output: board_info_ed
     entity_category: diagnostic
     restore_mode: ALWAYS_OFF
@@ -1405,47 +1345,47 @@ output:
 
 switch:
 #  - platform: factory_reset
-#    name: Factory Reset
+#    name: ${entity_name} Factory Reset
 #    disabled_by_default: True
 #    icon: mdi:heart-broken
 #    entity_category: diagnostic
   - platform: template
-    name: Zout1 Enable
+    name: ${entity_name} Zout1 Enable
     id: zone_ex1_enable
     optimistic: True
     icon: mdi:account-cancel
     entity_category: config
     restore_mode: RESTORE_DEFAULT_OFF
   - platform: template
-    name: Zout2 Enable
+    name: ${entity_name} Zout2 Enable
     id: zone_ex2_enable
     optimistic: True
     icon: mdi:account-cancel
     entity_category: config
     restore_mode: RESTORE_DEFAULT_OFF
   - platform: template
-    name: Zout3 Enable
+    name: ${entity_name} Zout3 Enable
     id: zone_ex3_enable
     optimistic: True
     icon: mdi:account-cancel
     entity_category: config
     restore_mode: RESTORE_DEFAULT_OFF
   - platform: template
-    name: Target Enable
+    name: ${entity_name} Target Enable
     id: target_fn_enable
     optimistic: True
     icon: mdi:target-variant
     entity_category: config
     restore_mode: RESTORE_DEFAULT_ON
   - platform: template
-    name: Zone Enable
+    name: ${entity_name} Zone Enable
     id: zone_fn_enable
     optimistic: True
     icon: mdi:target-variant
     entity_category: config
     restore_mode: RESTORE_DEFAULT_ON
   - platform: template
-    name: Illuminance Fast-Update
+    name: ${entity_name} Illuminance Fast-Update
     id: bh1750_fast_update
     optimistic: True
     entity_category: diagnostic
@@ -1456,7 +1396,7 @@ switch:
 button:
   - platform: restart
     icon: mdi:power-cycle
-    name: "ESP Reboot"
+    name: "${entity_name} ESP Reboot"
     entity_category: diagnostic
 
 uart:
@@ -1482,584 +1422,196 @@ uart:
      delimiter: [0X55, 0XCC]
     sequence:
       - lambda: |-
+      
+          // Tableaux pour stocker les noms des champs
+          static template_::TemplateNumber* zone_x[] = {id(zone1_x), id(zone2_x), id(zone3_x), id(zone4_x), id(zone5_x), id(zone6_x)};
+          static template_::TemplateNumber* zone_y[] = {id(zone1_y), id(zone2_y), id(zone3_y), id(zone4_y), id(zone5_y), id(zone6_y)};
+          static template_::TemplateNumber* zone_height[] = {id(zone1_height), id(zone2_height), id(zone3_height), id(zone4_height), id(zone5_height), id(zone6_height)};
+          static template_::TemplateNumber* zone_width[] = {id(zone1_width), id(zone2_width), id(zone3_width), id(zone4_width), id(zone5_width), id(zone6_width)};
+          static template_::TemplateSensor* zone_target_count[] = {id(zone1_target_count), id(zone2_target_count), id(zone3_target_count), id(zone4_target_count), id(zone5_target_count), id(zone6_target_count)};
+          static template_::TemplateBinarySensor* zone_target_exist[] = {id(zone1_target_exist), id(zone2_target_exist), id(zone3_target_exist), id(zone4_target_exist), id(zone5_target_exist), id(zone6_target_exist)};
+          // static template_::TemplateTextSensor* tips_zone_conf[] = {id(tips_zone1_conf), id(tips_zone2_conf), id(tips_zone3_conf), id(tips_zone4_conf), id(tips_zone5_conf), id(tips_zone6_conf)};
+          const int NUM_ZONES = 6;
+          static template_::TemplateSwitch* zone_ex_enable[] = {id(zone_ex1_enable), id(zone_ex2_enable), id(zone_ex3_enable)};
+          static template_::TemplateNumber* zone_ex_x[] = {id(zone_ex1_x), id(zone_ex2_x), id(zone_ex3_x)};
+          static template_::TemplateNumber* zone_ex_y[] = {id(zone_ex1_y), id(zone_ex2_y), id(zone_ex3_y)};
+          static template_::TemplateNumber* zone_ex_height[] = {id(zone_ex1_height), id(zone_ex2_height), id(zone_ex3_height)};
+          static template_::TemplateNumber* zone_ex_width[] = {id(zone_ex1_width), id(zone_ex2_width), id(zone_ex3_width)};
+          static template_::TemplateSensor* zone_ex_target_count[] = {id(zone_ex1_target_count), id(zone_ex2_target_count), id(zone_ex3_target_count)};
+          static template_::TemplateBinarySensor* zone_ex_target_exist[] = {id(zone_ex1_target_exist), id(zone_ex2_target_exist), id(zone_ex3_target_exist)};
+          // static template_::TemplateTextSensor* tips_zone_ex_conf[] = {id(tips_zone_ex1_conf), id(tips_zone_ex2_conf), id(tips_zone_ex3_conf)};
+          const int NUM_ZONES_EX = 3;
+          static template_::TemplateSensor* target_angle[] = {id(target1_angle), id(target2_angle), id(target3_angle)};
+          static template_::TemplateTextSensor* target_position[] = {id(target1_position), id(target2_position), id(target3_position)};
+          static template_::TemplateTextSensor* target_direction[] = {id(target1_direction), id(target2_direction), id(target3_direction)};
+          static template_::TemplateSensor* target_x[] = {id(target1_x), id(target2_x), id(target3_x)};
+          static template_::TemplateSensor* target_y[] = {id(target1_y), id(target2_y), id(target3_y)};
+          static template_::TemplateSensor* target_speed[] = {id(target1_speed), id(target2_speed), id(target3_speed)};
+          static template_::TemplateSensor* target_resolution[] = {id(target1_resolution), id(target2_resolution), id(target3_resolution)};
+          const int NUM_TARGETS = 3;
+          float angle = id(wall_angle).state*1;
+          
+          struct Position  p[NUM_TARGETS];
+          struct Zone zone_ex[NUM_ZONES_EX], zone[NUM_ZONES];
+          
           if ((millis() - id(last_update_ld2450)) <= 500) { 
             return;
           };
           id(last_update_ld2450) = millis();
 
-          // p1
-          int16_t p1_x = (uint16_t((bytes[5] << 8) | bytes[4] ));
-          if ((bytes[5] & 0x80) >> 7){
-            p1_x -= pow(2, 15); 
-          }else{
-            p1_x = 0 - p1_x;
-          }
-          p1_x = p1_x * -1;
+          //Targets' data
+          int b = 0;
+          for (int i = 0; i < NUM_TARGETS; i++) {
+            p[i].x = (uint16_t((bytes[b+5] << 8) | bytes[b+4] ));
+            if ((bytes[b+5] & 0x80) >> 7){
+              p[i].x -= pow(2, 15); 
+            }else{
+              p[i].x = 0 - p[i].x;
+            }
+            p[i].x = p[i].x * -1;
 
-          int16_t p1_y = (uint16_t((bytes[7] << 8) | bytes[6] ));
-          if ((bytes[7] & 0x80) >> 7){
-            p1_y -= pow(2, 15);
-          }else{
-            p1_y = 0 - p1_y;
-          }
+            p[i].y = (uint16_t((bytes[b+7] << 8) | bytes[b+6] ));
+            if ((bytes[b+7] & 0x80) >> 7){
+              p[i].y -= pow(2, 15);
+            }else{
+              p[i].y = 0 - p[i].y;
+            }
 
-          int p1_speed = (bytes[9] << 8 | bytes[8] );
-          if ((bytes[9] & 0x80) >> 7){
-            p1_speed -= pow(2, 15);
-          }else{
-            p1_speed = 0 - p1_speed;
-          }
-          int16_t p1_distance_resolution = (uint16_t((bytes[11] << 8) | bytes[10] )); 
-
-          // p2
-          int16_t p2_x = (uint16_t((bytes[13] << 8) | bytes[12] ));
-          if ((bytes[13] & 0x80) >> 7){
-            p2_x -=  pow(2, 15); 
-          }else{
-            p2_x = 0 - p2_x;
-          }
-          p2_x = p2_x * -1;
-
-          int16_t p2_y = (uint16_t((bytes[15] << 8) | bytes[14] ));
-          if ((bytes[15] & 0x80) >> 7){
-            p2_y -= pow(2, 15);
-          }else{
-            p2_y = 0 - p2_y;
-          }
-
-          int p2_speed = (bytes[17] << 8 | bytes[16] );
-          if ((bytes[17] & 0x80) >> 7){
-            p2_speed -= pow(2, 15);
-          }else{
-            p2_speed = 0 - p2_speed;
-          }
-          int16_t p2_distance_resolution = (uint16_t((bytes[19] << 8) | bytes[18] )); 
-
-          // p3
-          int16_t p3_x = (uint16_t((bytes[21] << 8) | bytes[20] ));
-          if ((bytes[21] & 0x80) >> 7){
-            p3_x -=  pow(2, 15); 
-          }else{
-            p3_x = 0 - p3_x;
-          }
-          p3_x = p3_x * -1;
-
-          int16_t p3_y = (uint16_t((bytes[23] << 8) | bytes[22] ));
-          if ((bytes[23] & 0x80) >> 7){
-            p3_y -= pow(2, 15);
-          }else{
-            p3_y = 0 - p3_y;
-          }
-
-          int p3_speed = (bytes[25] << 8 | bytes[24] );
-          if ((bytes[25] & 0x80) >> 7){
-            p3_speed -= pow(2, 15);
-          }else{
-            p3_speed = 0 - p3_speed;
+            p[i].speed = (bytes[b+9] << 8 | bytes[b+8] );
+            if ((bytes[b+9] & 0x80) >> 7){
+              p[i].speed -= pow(2, 15);
+            }else{
+              p[i].speed = 0 - p[i].speed;
+            }
+            p[i].distance_resolution = (uint16_t((bytes[b+11] << 8) | bytes[b+10] )); 
+            p[i].valide = (p[i].x != 0 || p[i].y > 0);
+            b += 8;
           }
           
-          int16_t p3_distance_resolution = (uint16_t((bytes[27] << 8) | bytes[26] )); 
+          // Excluded zones 
+          for (int i = 0; i < NUM_ZONES_EX; i++) {
+            zone_ex[i].x = zone_ex_x[i]->state;
+            zone_ex[i].y = zone_ex_y[i]->state;
+            zone_ex[i].width = zone_ex_width[i]->state;
+            zone_ex[i].height = zone_ex_height[i]->state;
+            //zone_ex[i].tips_conf = tips_zone_ex_conf[i];
+            //zone_ex[i].name += "_ex" + std::to_string(i+1);
 
-          bool p1_vaild = (p1_x != 0 || p1_y > 0);
-          bool p2_vaild = (p2_x != 0 || p2_y > 0);
-          bool p3_vaild = (p3_x != 0 || p3_y > 0);
-
-          // Zones exludes
-
-          bool p1_zone_ex_enter = false;
-          bool p2_zone_ex_enter = false;
-          bool p3_zone_ex_enter = false;
-          
-          // zone exlude 1
-
-          int16_t target_count_in_zone_ex1 = 0;
-
-          int16_t zone_ex1_x_min = id(zone_ex1_x_begin).state;
-          int16_t zone_ex1_x_max = id(zone_ex1_x_end).state;
-          int16_t zone_ex1_y_min = id(zone_ex1_y_begin).state;
-          int16_t zone_ex1_y_max = id(zone_ex1_y_end).state;
-
-          if (id(zone_ex1_enable).state){
-            if (p1_vaild){
-              if (p1_x >= zone_ex1_x_min && p1_x <= zone_ex1_x_max && p1_y >= zone_ex1_y_min && p1_y <= zone_ex1_y_max){
-                  p1_zone_ex_enter = true;
-                  target_count_in_zone_ex1 ++;
+            if (zone_ex_enable[i]->state){
+              for (int j = 0; j < NUM_TARGETS; j++) {
+                if (p[j].valide){
+                  if (check_targets_in_zone(zone_ex[i], p[j], angle)){
+                    zone_ex[i].target_count++;
+                    p[j].zone_ex_enter = true;
+                  }
+                }
               }
             }
-            if (p2_vaild){
-              if (p2_x >= zone_ex1_x_min && p2_x <= zone_ex1_x_max && p2_y >= zone_ex1_y_min && p2_y <= zone_ex1_y_max){
-                  p2_zone_ex_enter = true;
-                  target_count_in_zone_ex1 ++;
-              }
-            }
-            if (p3_vaild){
-              if (p3_x >= zone_ex1_x_min && p3_x <= zone_ex1_x_max && p3_y >= zone_ex1_y_min && p3_y <= zone_ex1_y_max){
-                  p3_zone_ex_enter = true;
-                  target_count_in_zone_ex1 ++;
-              }
-            }
+            zone_ex[i].has_target = (zone_ex[i].target_count > 0);
           }
-
-          bool has_target_in_zone_ex1 = (target_count_in_zone_ex1 > 0);
           
-          // zone exlude 2
-
-          int16_t target_count_in_zone_ex2 = 0;
-
-          int16_t zone_ex2_x_min = id(zone_ex2_x_begin).state;
-          int16_t zone_ex2_x_max = id(zone_ex2_x_end).state;
-          int16_t zone_ex2_y_min = id(zone_ex2_y_begin).state;
-          int16_t zone_ex2_y_max = id(zone_ex2_y_end).state;
-
-          if (id(zone_ex2_enable).state){
-            if (p1_vaild){
-              if (p1_x >= zone_ex2_x_min && p1_x <= zone_ex2_x_max && p1_y >= zone_ex2_y_min && p1_y <= zone_ex2_y_max){
-                  p1_zone_ex_enter = true;
-                  target_count_in_zone_ex2 ++;
-              }
-            }
-            if (p2_vaild){
-              if (p2_x >= zone_ex2_x_min && p2_x <= zone_ex2_x_max && p2_y >= zone_ex2_y_min && p2_y <= zone_ex2_y_max){
-                  p2_zone_ex_enter = true;
-                  target_count_in_zone_ex2 ++;
-              }
-            }
-            if (p3_vaild){
-              if (p3_x >= zone_ex2_x_min && p3_x <= zone_ex2_x_max && p3_y >= zone_ex2_y_min && p3_y <= zone_ex2_y_max){
-                  p3_zone_ex_enter = true;
-                  target_count_in_zone_ex2 ++;
-              }
-            }
-          }
-
-          bool has_target_in_zone_ex2 = (target_count_in_zone_ex2 > 0);
-          
-          // zone exlude 3
-
-          int16_t target_count_in_zone_ex3 = 0;
-
-          int16_t zone_ex3_x_min = id(zone_ex3_x_begin).state;
-          int16_t zone_ex3_x_max = id(zone_ex3_x_end).state;
-          int16_t zone_ex3_y_min = id(zone_ex3_y_begin).state;
-          int16_t zone_ex3_y_max = id(zone_ex3_y_end).state;
-
-          if (id(zone_ex3_enable).state){
-            if (p1_vaild){
-              if (p1_x >= zone_ex3_x_min && p1_x <= zone_ex3_x_max && p1_y >= zone_ex3_y_min && p1_y <= zone_ex3_y_max){
-                  p1_zone_ex_enter = true;
-                  target_count_in_zone_ex3 ++;
-              }
-            }
-            if (p2_vaild){
-              if (p2_x >= zone_ex3_x_min && p2_x <= zone_ex3_x_max && p2_y >= zone_ex3_y_min && p2_y <= zone_ex3_y_max){
-                  p2_zone_ex_enter = true;
-                  target_count_in_zone_ex3 ++;
-              }
-            }
-            if (p3_vaild){
-              if (p3_x >= zone_ex3_x_min && p3_x <= zone_ex3_x_max && p3_y >= zone_ex3_y_min && p3_y <= zone_ex3_y_max){
-                  p3_zone_ex_enter = true;
-                  target_count_in_zone_ex3 ++;
-              }
-            }
-          }
-
-          bool has_target_in_zone_ex3 = (target_count_in_zone_ex3 > 0);
-
           // all targets
-
           int16_t all_target_counts = 0;
-          if (p1_vaild && !p1_zone_ex_enter){
-            all_target_counts ++;
-          }
-          if (p2_vaild && !p2_zone_ex_enter){
-            all_target_counts ++;
-          }
-          if (p3_vaild && !p3_zone_ex_enter){
-            all_target_counts ++;
+          for (int i = 0; i < NUM_TARGETS; i++) {
+            if (p[i].valide && !p[i].zone_ex_enter){
+              all_target_counts ++;
+            }
           }
 
           bool has_target_in_zone_all = (all_target_counts > 0);
 
           // zones check
-
-          int16_t target_count_in_zone1 = 0;
-          bool has_target_in_zone1 = false;
-
-          int16_t target_count_in_zone2 = 0;
-          bool has_target_in_zone2 = false;
-
-          int16_t target_count_in_zone3 = 0;
-          bool has_target_in_zone3 = false;
-
-          int16_t target_count_in_zone4 = 0;
-          bool has_target_in_zone4 = false;
-
-          int16_t target_count_in_zone5 = 0;
-          bool has_target_in_zone5 = false;
-
-          int16_t target_count_in_zone6 = 0;
-          bool has_target_in_zone6 = false;
-
           if (id(zone_fn_enable).state){
-
-            // zone 1 check
-
-            int16_t zone1_x_min = id(zone1_x_begin).state;
-            int16_t zone1_x_max = id(zone1_x_end).state;
-            int16_t zone1_y_min = id(zone1_y_begin).state;
-            int16_t zone1_y_max = id(zone1_y_end).state;
-
-            if (p1_vaild && !p1_zone_ex_enter){
-              if (p1_x >= zone1_x_min && p1_x <= zone1_x_max && p1_y >= zone1_y_min && p1_y <= zone1_y_max){
-                  target_count_in_zone1 ++;
+            for (int i = 0; i < NUM_ZONES; i++) {
+              zone[i].x = zone_x[i]->state;
+              zone[i].y = zone_y[i]->state;
+              zone[i].width = zone_width[i]->state;
+              zone[i].height = zone_height[i]->state;
+              //zone[i].tips_conf = tips_zone_conf[i];
+              //zone[i].name += std::to_string(i+1);
+              
+              for (int j = 0; j < NUM_TARGETS; j++) {
+                if (p[j].valide && !p[j].zone_ex_enter){
+                  if(check_targets_in_zone(zone[i], p[j], angle)) {
+                    zone[i].target_count++;
+                  }
+                }
               }
+              zone[i].has_target = (zone[i].target_count > 0);
             }
-            if (p2_vaild && !p2_zone_ex_enter){
-              if (p2_x >= zone1_x_min && p2_x <= zone1_x_max && p2_y >= zone1_y_min && p2_y <= zone1_y_max){
-                  target_count_in_zone1 ++;
-              }
-            }
-            if (p3_vaild && !p3_zone_ex_enter){
-              if (p3_x >= zone1_x_min && p3_x <= zone1_x_max && p3_y >= zone1_y_min && p3_y <= zone1_y_max){
-                  target_count_in_zone1 ++;
-              }
-            }
-            has_target_in_zone1 = (target_count_in_zone1 > 0);
-
-            // zone 2 check
-
-            int16_t zone2_x_min = id(zone2_x_begin).state;
-            int16_t zone2_x_max = id(zone2_x_end).state;
-            int16_t zone2_y_min = id(zone2_y_begin).state;
-            int16_t zone2_y_max = id(zone2_y_end).state;
-
-            if (p1_vaild && !p1_zone_ex_enter){
-              if (p1_x >= zone2_x_min && p1_x <= zone2_x_max && p1_y >= zone2_y_min && p1_y <= zone2_y_max){
-                  target_count_in_zone2 ++;
-              }
-            }
-            if (p2_vaild && !p2_zone_ex_enter){
-              if (p2_x >= zone2_x_min && p2_x <= zone2_x_max && p2_y >= zone2_y_min && p2_y <= zone2_y_max){
-                  target_count_in_zone2 ++;
-              }
-            }
-            if (p3_vaild && !p3_zone_ex_enter){
-              if (p3_x >= zone2_x_min && p3_x <= zone2_x_max && p3_y >= zone2_y_min && p3_y <= zone2_y_max){
-                  target_count_in_zone2 ++;
-              }
-            }
-
-            has_target_in_zone2 = (target_count_in_zone2 > 0);
-
-            // zone 3 check
-
-            int16_t zone3_x_min = id(zone3_x_begin).state;
-            int16_t zone3_x_max = id(zone3_x_end).state;
-            int16_t zone3_y_min = id(zone3_y_begin).state;
-            int16_t zone3_y_max = id(zone3_y_end).state;
-
-            if (p1_vaild && !p1_zone_ex_enter){
-              if (p1_x >= zone3_x_min && p1_x <= zone3_x_max && p1_y >= zone3_y_min && p1_y <= zone3_y_max){
-                  target_count_in_zone3 ++;
-              }
-            }
-            if (p2_vaild && !p2_zone_ex_enter){
-              if (p2_x >= zone3_x_min && p2_x <= zone3_x_max && p2_y >= zone3_y_min && p2_y <= zone3_y_max){
-                  target_count_in_zone3 ++;
-              }
-            }
-            if (p3_vaild && !p3_zone_ex_enter){
-              if (p3_x >= zone3_x_min && p3_x <= zone3_x_max && p3_y >= zone3_y_min && p3_y <= zone3_y_max){
-                  target_count_in_zone3 ++;
-              }
-            }
-            has_target_in_zone3 = (target_count_in_zone3 > 0);
-
-            // zone 4 check
-
-            int16_t zone4_x_min = id(zone4_x_begin).state;
-            int16_t zone4_x_max = id(zone4_x_end).state;
-            int16_t zone4_y_min = id(zone4_y_begin).state;
-            int16_t zone4_y_max = id(zone4_y_end).state;
-
-            if (p1_vaild && !p1_zone_ex_enter){
-              if (p1_x >= zone4_x_min && p1_x <= zone4_x_max && p1_y >= zone4_y_min && p1_y <= zone4_y_max){
-                  target_count_in_zone4 ++;
-              }
-            }
-            if (p2_vaild && !p2_zone_ex_enter){
-              if (p2_x >= zone4_x_min && p2_x <= zone4_x_max && p2_y >= zone4_y_min && p2_y <= zone4_y_max){
-                  target_count_in_zone4 ++;
-              }
-            }
-            if (p3_vaild && !p3_zone_ex_enter){
-              if (p3_x >= zone4_x_min && p3_x <= zone4_x_max && p3_y >= zone4_y_min && p3_y <= zone4_y_max){
-                  target_count_in_zone4 ++;
-              }
-            }
-            has_target_in_zone4 = (target_count_in_zone4 > 0);
-
-            // zone 5 check
-
-            int16_t zone5_x_min = id(zone5_x_begin).state;
-            int16_t zone5_x_max = id(zone5_x_end).state;
-            int16_t zone5_y_min = id(zone5_y_begin).state;
-            int16_t zone5_y_max = id(zone5_y_end).state;
-
-            if (p1_vaild && !p1_zone_ex_enter){
-              if (p1_x >= zone5_x_min && p1_x <= zone5_x_max && p1_y >= zone5_y_min && p1_y <= zone5_y_max){
-                  target_count_in_zone5 ++;
-              }
-            }
-            if (p2_vaild && !p2_zone_ex_enter){
-              if (p2_x >= zone5_x_min && p2_x <= zone5_x_max && p2_y >= zone5_y_min && p2_y <= zone5_y_max){
-                  target_count_in_zone5 ++;
-              }
-            }
-            if (p3_vaild && !p3_zone_ex_enter){
-              if (p3_x >= zone5_x_min && p3_x <= zone5_x_max && p3_y >= zone5_y_min && p3_y <= zone5_y_max){
-                  target_count_in_zone5 ++;
-              }
-            }
-
-            has_target_in_zone5 = (target_count_in_zone5 > 0);
-
-            // zone 6 check
-
-            int16_t zone6_x_min = id(zone6_x_begin).state;
-            int16_t zone6_x_max = id(zone6_x_end).state;
-            int16_t zone6_y_min = id(zone6_y_begin).state;
-            int16_t zone6_y_max = id(zone6_y_end).state;
-
-            if (p1_vaild && !p1_zone_ex_enter){
-              if (p1_x >= zone6_x_min && p1_x <= zone6_x_max && p1_y >= zone6_y_min && p1_y <= zone6_y_max){
-                  target_count_in_zone6 ++;
-              }
-            }
-            if (p2_vaild && !p2_zone_ex_enter){
-              if (p2_x >= zone6_x_min && p2_x <= zone6_x_max && p2_y >= zone6_y_min && p2_y <= zone6_y_max){
-                  target_count_in_zone6 ++;
-              }
-            }
-            if (p3_vaild && !p3_zone_ex_enter){
-              if (p3_x >= zone6_x_min && p3_x <= zone6_x_max && p3_y >= zone6_y_min && p3_y <= zone6_y_max){
-                  target_count_in_zone6 ++;
-              }
-            }
-            has_target_in_zone6 = (target_count_in_zone6 > 0);
-
           }
 
           // Angle, Position and Direction, idea from walberjunior.
+          for (int i = 0; i < NUM_TARGETS; i++) {
+            if (p[i].valide){
+              p[i].angle = ((float)p[i].x / (float)p[i].y) * 180 / M_PI;;
+            }
+            if (target_angle[i]->state != p[i].angle && id(target_fn_enable).state){
+              target_angle[i]->publish_state(p[i].angle);
+            }
 
-          float p1_angle = 0;
-          if (p1_vaild){
-            p1_angle = ((float)p1_x / (float)p1_y) * 180 / M_PI;;
-          }
+            if (p[i].speed > 0) {
+              p[i].position = "Moving away";
+            } else if (p[i].speed < 0) {
+              p[i].position = "Approaching";
+            } 
+            if (p[i].position != target_position[i]->state && id(target_fn_enable).state){
+              target_position[i]->publish_state(p[i].position);
+            }
 
-          std::basic_string<char> p1_position = "Static";
-          if (p1_speed > 0) {
-            p1_position = "Moving away";
-          } else if (p1_speed < 0) {
-            p1_position = "Approaching";
-          } 
-
-          std::basic_string<char> p1_direction = "None";
-          if (p1_x > 0) {
-            p1_direction = "Right";
-          } else if (p1_x < 0) {
-            p1_direction = "Left";
-          } else if (p1_y > 0){
-            p1_direction = "Middle";
-          }
-
-          float p2_angle = 0;
-          if (p2_vaild){
-            p2_angle = ((float)p2_x / (float)p2_y) * 180 / M_PI;;
-          }
-
-          std::basic_string<char> p2_position = "Static";;
-          if (p2_speed > 0) {
-            p2_position = "Moving away";
-          } else if (p2_speed < 0) {
-            p2_position = "Approaching";
-          } 
-          
-          std::basic_string<char> p2_direction = "None";
-          if (p2_x > 0) {
-            p2_direction = "Right";
-          } else if (p2_x < 0) {
-            p2_direction = "Left";
-          } else if (p2_y > 0){
-            p2_direction = "Middle";
-          }
-
-          float p3_angle = 0;
-          if (p3_vaild){
-            p3_angle = ((float)p3_x / (float)p3_y) * 180 / M_PI;;
-          }
-          
-          std::basic_string<char> p3_position = "Static";;
-          if (p3_speed > 0) {
-            p3_position = "Moving away";
-          } else if (p3_speed < 0) {
-            p3_position = "Approaching";
-          } 
-
-          std::basic_string<char> p3_direction = "None";
-          if (p3_x > 0) {
-            p3_direction = "Right";
-          } else if (p3_x < 0) {
-            p3_direction = "Left";
-          } else if (p3_y > 0){
-            p3_direction = "Middle";
-          }
-
-          if (id(target1_angle).state != p1_angle && id(target_fn_enable).state){
-            id(target1_angle).publish_state(p1_angle);
-          }
-          if (id(target2_angle).state != p2_angle && id(target_fn_enable).state){
-            id(target2_angle).publish_state(p2_angle);
-          }
-          if (id(target3_angle).state != p3_angle && id(target_fn_enable).state){
-            id(target3_angle).publish_state(p3_angle);
-          }
-
-          if (p1_position != id(target1_position).state && id(target_fn_enable).state){
-            id(target1_position).publish_state(p1_position);
-          }
-          if (p2_position != id(target2_position).state && id(target_fn_enable).state){
-            id(target2_position).publish_state(p2_position);
-          }
-          if (p3_position != id(target3_position).state && id(target_fn_enable).state){
-            id(target3_position).publish_state(p3_position);
-          }
-
-          if (p1_direction != id(target1_direction).state && id(target_fn_enable).state){
-            id(target1_direction).publish_state(p1_direction);
-          }
-          if (p2_direction != id(target2_direction).state && id(target_fn_enable).state){
-            id(target2_direction).publish_state(p2_direction);
-          }
-          if (p3_direction != id(target3_direction).state && id(target_fn_enable).state){
-            id(target3_direction).publish_state(p3_direction);
+            if (p[i].x > 0) {
+              p[i].direction = "Right";
+            } else if (p[i].x < 0) {
+              p[i].direction = "Left";
+            } else if (p[i].y > 0){
+              p[i].direction = "Middle";
+            }
+            if (p[i].direction != target_direction[i]->state && id(target_fn_enable).state){
+              target_direction[i]->publish_state(p[i].direction);
+            }
           }
 
           // public all info
+          for (int i = 0; i < NUM_TARGETS; i++) {
+            if (target_x[i]->state != p[i].x && id(target_fn_enable).state){
+              target_x[i]->publish_state(p[i].x);
+            }
+            if (target_y[i]->state != p[i].y && id(target_fn_enable).state){
+              target_y[i]->publish_state(p[i].y);
+            }
 
-          if (id(target1_x).state != p1_x && id(target_fn_enable).state){
-            id(target1_x).publish_state(p1_x);
-          }
-          if (id(target1_y).state != p1_y && id(target_fn_enable).state){
-            id(target1_y).publish_state(p1_y);
-          }
-
-          float p1_m_speed = float(p1_speed) / 100.0;
-          if (id(target1_speed).state != p1_m_speed && id(target_fn_enable).state){
-            id(target1_speed).publish_state(p1_m_speed);
-          }
-          if (id(target1_resolution).state != p1_distance_resolution && id(target_fn_enable).state){
-            id(target1_resolution).publish_state(p1_distance_resolution);
-          }
-
-          if (id(target2_x).state != p2_x && id(target_fn_enable).state){
-            id(target2_x).publish_state(p2_x);
-          }
-          if (id(target2_y).state != p2_y && id(target_fn_enable).state){
-            id(target2_y).publish_state(p2_y);
-          }
-          if (id(target2_speed).state != p2_speed && id(target_fn_enable).state){
-            id(target2_speed).publish_state(p2_speed);
-          }
-          if (id(target2_resolution).state != p2_distance_resolution && id(target_fn_enable).state){
-            id(target2_resolution).publish_state(p2_distance_resolution);
+            p[i].speed = float(p[i].speed) / 100.0;
+            if (target_speed[i]->state != p[i].speed && id(target_fn_enable).state){
+              target_speed[i]->publish_state(p[i].speed);
+            }
+            if (target_resolution[i]->state != p[i].distance_resolution && id(target_fn_enable).state){
+              target_resolution[i]->publish_state(p[i].distance_resolution);
+            }
           }
 
-          if (id(target3_x).state != p3_x && id(target_fn_enable).state){
-            id(target3_x).publish_state(p3_x);
-          }
-          if (id(target3_y).state != p3_y && id(target_fn_enable).state){
-            id(target3_y).publish_state(p3_y);
-          }
-          if (id(target3_speed).state != p3_speed && id(target_fn_enable).state){
-            id(target3_speed).publish_state(p3_speed);
-          }
-          if (id(target3_resolution).state != p3_distance_resolution && id(target_fn_enable).state){
-            id(target3_resolution).publish_state(p3_distance_resolution);
-          }
-
-          // publish target info
-          
+          // publish target and zone info
           if (id(all_target_count).state != all_target_counts){
             id(all_target_count).publish_state(all_target_counts);
-            id(any_target_exsits).publish_state(has_target_in_zone_all);
-          }else if (id(any_target_exsits).state != has_target_in_zone_all){
-            id(any_target_exsits).publish_state(has_target_in_zone_all);
+            id(any_target_exist).publish_state(has_target_in_zone_all);
+          }else if (id(any_target_exist).state != has_target_in_zone_all){
+            id(any_target_exist).publish_state(has_target_in_zone_all);
           }
 
-          if (id(zone1_target_count).state != target_count_in_zone1){
-            id(zone1_target_count).publish_state(target_count_in_zone1);
-            id(zone1_target_exsits).publish_state(has_target_in_zone1);
-          }else if (id(zone1_target_exsits).state != has_target_in_zone1){
-            id(zone1_target_exsits).publish_state(has_target_in_zone1);
+          for (int i = 0; i < NUM_ZONES; i++) {
+            if (zone_target_count[i]->state != zone[i].target_count){
+              zone_target_count[i]->publish_state(zone[i].target_count);
+              zone_target_exist[i]->publish_state(zone[i].has_target);
+            }else if (zone_target_exist[i]->state != zone[i].has_target){
+              zone_target_exist[i]->publish_state(zone[i].has_target);
+            }
           }
-
-          if (id(zone2_target_count).state != target_count_in_zone2){
-            id(zone2_target_count).publish_state(target_count_in_zone2);
-            id(zone2_target_exsits).publish_state(has_target_in_zone2);
-          }else if (id(zone2_target_exsits).state != has_target_in_zone2){
-            id(zone2_target_exsits).publish_state(has_target_in_zone2);
-          }
-
-          if (id(zone3_target_count).state != target_count_in_zone3){
-            id(zone3_target_count).publish_state(target_count_in_zone3);
-            id(zone3_target_exsits).publish_state(has_target_in_zone3);
-          }else if (id(zone3_target_exsits).state != has_target_in_zone3){
-            id(zone3_target_exsits).publish_state(has_target_in_zone3);
-          }
-
-          if (id(zone4_target_count).state != target_count_in_zone4){
-            id(zone4_target_count).publish_state(target_count_in_zone4);
-            id(zone4_target_exsits).publish_state(has_target_in_zone4);
-          }else if (id(zone4_target_exsits).state != has_target_in_zone4){
-            id(zone4_target_exsits).publish_state(has_target_in_zone4);
-          }
-
-          if (id(zone5_target_count).state != target_count_in_zone5){
-            id(zone5_target_count).publish_state(target_count_in_zone5);
-            id(zone5_target_exsits).publish_state(has_target_in_zone5);
-          }else if (id(zone5_target_exsits).state != has_target_in_zone5){
-            id(zone5_target_exsits).publish_state(has_target_in_zone5);
-          }
-
-          if (id(zone6_target_count).state != target_count_in_zone6){
-            id(zone6_target_count).publish_state(target_count_in_zone6);
-            id(zone6_target_exsits).publish_state(has_target_in_zone6);
-          }else if (id(zone6_target_exsits).state != has_target_in_zone6){
-            id(zone6_target_exsits).publish_state(has_target_in_zone6);
-          }
-          
-          // zout
-          if (id(zone_ex1_target_count).state != target_count_in_zone_ex1){
-            id(zone_ex1_target_count).publish_state(target_count_in_zone_ex1);
-          }
-          if (id(zone_ex1_target_exsits).state != has_target_in_zone_ex1){
-            id(zone_ex1_target_exsits).publish_state(has_target_in_zone_ex1);
-          }
-          
-          if (id(zone_ex2_target_count).state != target_count_in_zone_ex2){
-            id(zone_ex2_target_count).publish_state(target_count_in_zone_ex2);
-          }
-          if (id(zone_ex2_target_exsits).state != has_target_in_zone_ex2){
-            id(zone_ex2_target_exsits).publish_state(has_target_in_zone_ex2);
-          }
-          
-          if (id(zone_ex3_target_count).state != target_count_in_zone_ex3){
-            id(zone_ex3_target_count).publish_state(target_count_in_zone_ex3);
-          }
-          if (id(zone_ex3_target_exsits).state != has_target_in_zone_ex3){
-            id(zone_ex3_target_exsits).publish_state(has_target_in_zone_ex3);
+          for (int i = 0; i < NUM_ZONES_EX; i++) {
+            if (zone_ex_target_count[i]->state != zone_ex[i].target_count){
+              zone_ex_target_count[i]->publish_state(zone_ex[i].target_count);
+            }
+            if (zone_ex_target_exist[i]->state != zone_ex[i].has_target){
+              zone_ex_target_exist[i]->publish_state(zone_ex[i].has_target);
+            }
           }
 
           if (!id(init_zone_publish)){
