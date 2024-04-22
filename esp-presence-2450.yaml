@@ -2,11 +2,16 @@
 #https://docs.screek.io/2a
 substitutions:
   devicename: hpsz-room
-  entity_name: "Room"
+  friendly_name: Room
+  entity_name: "" # Leave empty if you want entities named "Target..." otherwise put "Room" to have an entity named "Room Target..."
+  # specify below pin numbers of your LD2450
+  tx_pin_ld2450: GPIO17
+  rx_pin_ld2450: GPIO16
   
 #ESP32/LD2450 : Human Presence Sensor by Zone
 esphome:
   name: $devicename
+  friendly_name: ${friendly_name}
   comment: Human Presence Sensor by Zone (ESP32/LD2450)
   #name_add_mac_suffix: True
   platformio_options:
@@ -14,7 +19,7 @@ esphome:
     # board_build.f_cpu: 80000000L
   project: 
     name: 53l3cu5.Human_Presence_Sensor_by_Zone
-    version: 2.O
+    version: "2.1"
   on_boot:
     - priority: -200
       then:
@@ -81,9 +86,11 @@ web_server:
   port: 80
   
 text_sensor:
+  - platform: version
+    name: "Version"
   - platform: debug
     reset_reason:
-      name: "${entity_name} ESP Reset Reason"
+      name: ${entity_name} ESP Reset Reason
       icon: mdi:anchor
       disabled_by_default: True
   - platform: wifi_info
@@ -98,7 +105,7 @@ text_sensor:
       icon: mdi:ip-network
       disabled_by_default: True
   - platform: template
-    name: "${entity_name} Zone1 Info"
+    name: ${entity_name} Zone1 Info
     id: tips_zone1_conf
     icon: mdi:information-outline
     entity_category: config
@@ -106,7 +113,7 @@ text_sensor:
       return {"Configure below" };
     update_interval: 1000s
   - platform: template
-    name: "${entity_name} Zone2 Info"
+    name: ${entity_name} Zone2 Info
     id: tips_zone2_conf
     icon: mdi:information-outline
     entity_category: config
@@ -114,12 +121,12 @@ text_sensor:
       return {"Configure below" };
     update_interval: 1000s
   - platform: template
-    name: "${entity_name} Zone3 Info"
+    name: ${entity_name} Zone3 Info
     id: tips_zone3_conf
     icon: mdi:information-outline
     entity_category: config
   - platform: template
-    name: "${entity_name} Zone4 Info"
+    name: ${entity_name} Zone4 Info
     id: tips_zone4_conf
     icon: mdi:information-outline
     entity_category: config
@@ -127,7 +134,7 @@ text_sensor:
       return {"Configure below" };
     update_interval: 1000s
   - platform: template
-    name: "${entity_name} Zone5 Info"
+    name: ${entity_name} Zone5 Info
     id: tips_zone5_conf
     icon: mdi:information-outline
     entity_category: config
@@ -135,7 +142,7 @@ text_sensor:
       return {"Configure below" };
     update_interval: 1000s
   - platform: template
-    name: "${entity_name} Zone6 Info"
+    name: ${entity_name} Zone6 Info
     id: tips_zone6_conf
     icon: mdi:information-outline
     entity_category: config
@@ -143,7 +150,7 @@ text_sensor:
       return {"Configure below" };
     update_interval: 1000s
   - platform: template
-    name: "${entity_name} Zout1 Info"
+    name: ${entity_name} Zout1 Info
     id: tips_zone_ex1_conf
     icon: mdi:information-outline
     entity_category: config
@@ -151,7 +158,7 @@ text_sensor:
       return {"Zone Exclusion 1" };
     update_interval: 1000s
   - platform: template
-    name: "${entity_name} Zout2 Info"
+    name: ${entity_name} Zout2 Info
     id: tips_zone_ex2_conf
     icon: mdi:information-outline
     entity_category: config
@@ -159,7 +166,7 @@ text_sensor:
       return {"Zone Exclusion 2" };
     update_interval: 1000s
   - platform: template
-    name: "${entity_name} Zout3 Info"
+    name: ${entity_name} Zout3 Info
     id: tips_zone_ex3_conf
     icon: mdi:information-outline
     entity_category: config
@@ -167,7 +174,7 @@ text_sensor:
       return {"Zone Exclusion 3" };
     update_interval: 1000s
   - platform: template
-    name: "${entity_name} Any-Presence Info"
+    name: ${entity_name} Any-Presence Info
     id: tips_any_presence_conf
     icon: mdi:information-outline
     entity_category: config
@@ -175,33 +182,33 @@ text_sensor:
       return {"Any Presence Config" };
     update_interval: 1000s
   - platform: template
-    name: "${entity_name} Target1 Direction"
+    name: ${entity_name} Target1 Direction
     id: target1_direction
     icon: mdi:directions
   - platform: template
-    name: "${entity_name} Target2 Direction"
+    name: ${entity_name} Target2 Direction
     id: target2_direction
     icon: mdi:directions
   - platform: template
-    name: "${entity_name} Target3 Direction"
+    name: ${entity_name} Target3 Direction
     id: target3_direction
     icon: mdi:directions
   - platform: template
-    name: "${entity_name} Target1 Position"
+    name: ${entity_name} Target1 Position
     id: target1_position
     icon: mdi:directions
   - platform: template
-    name: "${entity_name} Target2 Position"
+    name: ${entity_name} Target2 Position
     id: target2_position
     icon: mdi:directions
   - platform: template
-    name: "${entity_name} Target3 Position"
+    name: ${entity_name} Target3 Position
     id: target3_position
     icon: mdi:directions
 
 number:
   - platform: template
-    name: "${entity_name} Angle"
+    name: ${entity_name} Angle
     id: wall_angle
     min_value: 0
     max_value: 90
@@ -215,7 +222,7 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "${entity_name} Any Presence Timeout"
+    name: ${entity_name} Any Presence Timeout
     id: any_presence_timeout
     min_value: 0
     max_value: 600
@@ -229,7 +236,7 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "${entity_name} Zone1 Timeout"
+    name: ${entity_name} Zone1 Timeout
     id: zone1_timeout
     min_value: 0
     max_value: 600
@@ -243,7 +250,7 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "${entity_name} Zone2 Timeout"
+    name: ${entity_name} Zone2 Timeout
     id: zone2_timeout
     min_value: 0
     max_value: 600
@@ -257,7 +264,7 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "${entity_name} Zone3 Timeout"
+    name: ${entity_name} Zone3 Timeout
     id: zone3_timeout
     min_value: 0
     max_value: 600
@@ -271,7 +278,7 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "${entity_name} Zone4 Timeout"
+    name: ${entity_name} Zone4 Timeout
     id: zone4_timeout
     min_value: 0
     max_value: 600
@@ -285,7 +292,7 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "${entity_name} Zone5 Timeout"
+    name: ${entity_name} Zone5 Timeout
     id: zone5_timeout
     min_value: 0
     max_value: 600
@@ -299,7 +306,7 @@ number:
     initial_value: 0
     restore_value: True
   - platform: template
-    name: "${entity_name} Zone6 Timeout"
+    name: ${entity_name} Zone6 Timeout
     id: zone6_timeout
     min_value: 0
     max_value: 600
@@ -948,7 +955,7 @@ binary_sensor:
     name: ${entity_name} Online
     id: ink_ha_connected
   - platform: template
-    name: "${entity_name} Any Presence"
+    name: ${entity_name} Any Presence
     id: any_target_exist
     device_class: occupancy
     filters:
@@ -958,7 +965,7 @@ binary_sensor:
           };
           return id(any_presence_timeout).state * 1000.0;
   - platform: template
-    name: "${entity_name} Zone1 Presence"
+    name: ${entity_name} Zone1 Presence
     id: zone1_target_exist
     device_class: occupancy
     filters:
@@ -968,7 +975,7 @@ binary_sensor:
           }
           return id(zone1_timeout).state * 1000.0;
   - platform: template
-    name: "${entity_name} Zone2 Presence"
+    name: ${entity_name} Zone2 Presence
     id: zone2_target_exist
     device_class: occupancy
     filters:
@@ -978,7 +985,7 @@ binary_sensor:
           }
           return id(zone2_timeout).state * 1000.0;
   - platform: template
-    name: "${entity_name} Zone3 Presence"
+    name: ${entity_name} Zone3 Presence
     id: zone3_target_exist
     device_class: occupancy
     filters:
@@ -988,7 +995,7 @@ binary_sensor:
           }
           return id(zone3_timeout).state * 1000.0;
   - platform: template
-    name: "${entity_name} Zone4 Presence"
+    name: ${entity_name} Zone4 Presence
     id: zone4_target_exist
     device_class: occupancy
     filters:
@@ -998,7 +1005,7 @@ binary_sensor:
           }
           return id(zone4_timeout).state * 1000.0;
   - platform: template
-    name: "${entity_name} Zone5 Presence"
+    name: ${entity_name} Zone5 Presence
     id: zone5_target_exist
     device_class: occupancy
     filters:
@@ -1008,7 +1015,7 @@ binary_sensor:
           }
           return id(zone5_timeout).state * 1000.0;
   - platform: template
-    name: "${entity_name} Zone6 Presence"
+    name: ${entity_name} Zone6 Presence
     id: zone6_target_exist
     device_class: occupancy
     filters:
@@ -1018,17 +1025,17 @@ binary_sensor:
           }
           return id(zone6_timeout).state * 1000.0;
   - platform: template
-    name: "${entity_name} Zout1 Presence"
+    name: ${entity_name} Zout1 Presence
     id: zone_ex1_target_exist
     icon: mdi:account-multiple-remove
     device_class: occupancy
   - platform: template
-    name: "${entity_name} Zout2 Presence"
+    name: ${entity_name} Zout2 Presence
     id: zone_ex2_target_exist
     icon: mdi:account-multiple-remove
     device_class: occupancy
   - platform: template
-    name: "${entity_name} Zout3 Presence"
+    name: ${entity_name} Zout3 Presence
     id: zone_ex3_target_exist
     icon: mdi:account-multiple-remove
     device_class: occupancy
@@ -1148,61 +1155,61 @@ sensor:
 #-------------------------------------#
   # Advanced radar data
   - platform: template
-    name: "${entity_name} All Target Counts"
+    name: ${entity_name} All Target Counts
     id: all_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "${entity_name} Zone1 Target Counts"
+    name: ${entity_name} Zone1 Target Counts
     id: zone1_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "${entity_name} Zone2 Target Counts"
+    name: ${entity_name} Zone2 Target Counts
     id: zone2_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "${entity_name} Zone3 Target Counts"
+    name: ${entity_name} Zone3 Target Counts
     id: zone3_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "${entity_name} Zone4 Target Counts"
+    name: ${entity_name} Zone4 Target Counts
     id: zone4_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "${entity_name} Zone5 Target Counts"
+    name: ${entity_name} Zone5 Target Counts
     id: zone5_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "${entity_name} Zone6 Target Counts"
+    name: ${entity_name} Zone6 Target Counts
     id: zone6_target_count
     accuracy_decimals: 0
     icon: "mdi:counter"
     unit_of_measurement: "targets"
   - platform: template
-    name: "${entity_name} Zout1 Target Counts"
+    name: ${entity_name} Zout1 Target Counts
     id: zone_ex1_target_count
     accuracy_decimals: 0
     icon: mdi:account-multiple-minus-outline
     unit_of_measurement: "targets"
   - platform: template
-    name: "${entity_name} Zout2 Target Counts"
+    name: ${entity_name} Zout2 Target Counts
     id: zone_ex2_target_count
     accuracy_decimals: 0
     icon: mdi:account-multiple-minus-outline
     unit_of_measurement: "targets"
   - platform: template
-    name: "${entity_name} Zout3 Target Counts"
+    name: ${entity_name} Zout3 Target Counts
     id: zone_ex3_target_count
     accuracy_decimals: 0
     icon: mdi:account-multiple-minus-outline
@@ -1210,7 +1217,7 @@ sensor:
 
   # Target 1
   - platform: template
-    name: "${entity_name} Target1 X"
+    name: ${entity_name} Target1 X
     id: target1_x
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1218,7 +1225,7 @@ sensor:
     icon: mdi:focus-field-horizontal
     device_class: distance
   - platform: template
-    name: "${entity_name} Target1 Y"
+    name: ${entity_name} Target1 Y
     id: target1_y
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1226,14 +1233,14 @@ sensor:
     device_class: distance
     icon: mdi:focus-field-vertical
   - platform: template
-    name: "${entity_name} Target1 Speed"
+    name: ${entity_name} Target1 Speed
     id: target1_speed
     accuracy_decimals: 2
     unit_of_measurement: 'm/s'
     state_class: measurement
     device_class: speed
   - platform: template
-    name: "${entity_name} Target1 Resolution"
+    name: ${entity_name} Target1 Resolution
     id: target1_resolution
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1242,7 +1249,7 @@ sensor:
   
   # Target 2
   - platform: template
-    name: "${entity_name} Target2 X"
+    name: ${entity_name} Target2 X
     id: target2_x
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1250,7 +1257,7 @@ sensor:
     device_class: distance
     icon: mdi:focus-field-horizontal
   - platform: template
-    name: "${entity_name} Target2 Y"
+    name: ${entity_name} Target2 Y
     id: target2_y
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1258,14 +1265,14 @@ sensor:
     device_class: distance
     icon: mdi:focus-field-vertical
   - platform: template
-    name: "${entity_name} Target2 Speed"
+    name: ${entity_name} Target2 Speed
     id: target2_speed
     accuracy_decimals: 0
     unit_of_measurement: 'm/s'
     state_class: measurement
     device_class: speed
   - platform: template
-    name: "${entity_name} Target2 Resolution"
+    name: ${entity_name} Target2 Resolution
     id: target2_resolution
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1274,7 +1281,7 @@ sensor:
 
   # Target 3
   - platform: template
-    name: "${entity_name} Target3 X"
+    name: ${entity_name} Target3 X
     id: target3_x
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1282,7 +1289,7 @@ sensor:
     device_class: distance
     icon: mdi:focus-field-horizontal
   - platform: template
-    name: "${entity_name} Target3 Y"
+    name: ${entity_name} Target3 Y
     id: target3_y
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
@@ -1290,33 +1297,33 @@ sensor:
     device_class: distance
     icon: mdi:focus-field-vertical
   - platform: template
-    name: "${entity_name} Target3 Speed"
+    name: ${entity_name} Target3 Speed
     id: target3_speed
     accuracy_decimals: 0
     unit_of_measurement: 'm/s'
     state_class: measurement
     device_class: speed
   - platform: template
-    name: "${entity_name} Target3 Resolution"
+    name: ${entity_name} Target3 Resolution
     id: target3_resolution
     accuracy_decimals: 0
     unit_of_measurement: 'mm'
     state_class: measurement
     device_class: distance
   - platform: template
-    name: "${entity_name} Target1 Angle"
+    name: ${entity_name} Target1 Angle
     id: target1_angle
     unit_of_measurement: 'º'
     accuracy_decimals: 1
     icon: mdi:angle-acute
   - platform: template
-    name: "${entity_name} Target2 Angle"
+    name: ${entity_name} Target2 Angle
     id: target2_angle
     accuracy_decimals: 1
     unit_of_measurement: 'º'
     icon: mdi:angle-acute
   - platform: template
-    name: "${entity_name} Target3 Angle"
+    name: ${entity_name} Target3 Angle
     id: target3_angle
     accuracy_decimals: 1
     unit_of_measurement: 'º'
@@ -1329,7 +1336,7 @@ light:
     internal: True
     restore_mode: ALWAYS_OFF
   - platform: binary
-    name: "${entity_name} Red Info Light"
+    name: ${entity_name} Red Info Light
     output: board_info_ed
     entity_category: diagnostic
     restore_mode: ALWAYS_OFF
@@ -1396,18 +1403,18 @@ switch:
 button:
   - platform: restart
     icon: mdi:power-cycle
-    name: "${entity_name} ESP Reboot"
+    name: ${entity_name} ESP Reboot
     entity_category: diagnostic
 
 uart:
   id: uart_bus
   tx_pin: 
-    number: GPIO17
+    number: ${tx_pin_ld2450}
     mode:
       input: true
       pullup: true
   rx_pin: 
-    number: GPIO16
+    number: ${rx_pin_ld2450}
     mode:
       input: true
       pullup: true
