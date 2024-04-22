@@ -45,9 +45,9 @@ entities:
       shape: spline
       width: 5
     x:
-      - $ex hass.states["sensor.room_target1_x"].state
+      - $ex hass.states["sensor.hpsz_room_target1_x"].state
     'y':
-      - $ex hass.states["sensor.room_target1_y"].state
+      - $ex hass.states["sensor.hpsz_room_target1_y"].state
   - entity: ''
     name: Person2
     show_value: true
@@ -58,9 +58,9 @@ entities:
       shape: spline
       width: 5
     x:
-      - $ex hass.states["sensor.room_target2_x"].state
+      - $ex hass.states["sensor.hpsz_room_target2_x"].state
     'y':
-      - $ex hass.states["sensor.room_target2_y"].state
+      - $ex hass.states["sensor.hpsz_room_target2_y"].state
   - entity: ''
     name: Person3
     show_value: true
@@ -71,423 +71,423 @@ entities:
       shape: spline
       width: 5
     x:
-      - $ex hass.states["sensor.room_target3_x"].state
+      - $ex hass.states["sensor.hpsz_room_target3_x"].state
     'y':
-      - $ex hass.states["sensor.room_target3_y"].state
+      - $ex hass.states["sensor.hpsz_room_target3_y"].state
   - entity: ''
     name: Zone1
     mode: lines
     fill: toself
     fillcolor: >-
-      $ex hass.states["binary_sensor.room_zone1_presence"].state == "on" ?
+      $ex hass.states["binary_sensor.hpsz_room_zone1_presence"].state == "on" ?
       "RGBA(0,250,0,0.4)" : "RGBA(0,250,0,0.1)"
     line:
       color: RGBA(0,250,0,0.9)
       shape: line
       width: 2
     x:
-      - $ex hass.states["number.room_zone1_x"].state*1
+      - $ex hass.states["number.hpsz_room_zone1_x"].state*1
       - >-
-        $ex hass.states["number.room_zone1_x"].state*1 -
-        hass.states["number.room_zone1_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone1_x"].state*1 -
+        hass.states["number.hpsz_room_zone1_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone1_x"].state*1 -
-        hass.states["number.room_zone1_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zone1_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone1_x"].state*1 -
+        hass.states["number.hpsz_room_zone1_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zone1_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone1_x"].state*1 +
-        hass.states["number.room_zone1_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
-      - $ex hass.states["number.room_zone1_x"].state*1
+        $ex hass.states["number.hpsz_room_zone1_x"].state*1 +
+        hass.states["number.hpsz_room_zone1_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zone1_x"].state*1
     'y':
-      - $ex hass.states["number.room_zone1_y"].state*1
+      - $ex hass.states["number.hpsz_room_zone1_y"].state*1
       - >-
-        $ex hass.states["number.room_zone1_y"].state*1 +
-        hass.states["number.room_zone1_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone1_y"].state*1 +
+        hass.states["number.hpsz_room_zone1_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone1_y"].state*1 +
-        hass.states["number.room_zone1_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zone1_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone1_y"].state*1 +
+        hass.states["number.hpsz_room_zone1_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zone1_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone1_y"].state*1 +
-        hass.states["number.room_zone1_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
-      - $ex hass.states["number.room_zone1_y"].state*1
+        $ex hass.states["number.hpsz_room_zone1_y"].state*1 +
+        hass.states["number.hpsz_room_zone1_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zone1_y"].state*1
   - entity: ''
     name: Zone2
     mode: lines
     fill: toself
     fillcolor: >-
-      $ex hass.states["binary_sensor.room_zone2_presence"].state == "on" ?
+      $ex hass.states["binary_sensor.hpsz_room_zone2_presence"].state == "on" ?
       "RGBA(250,110,0,0.4)" : "RGBA(250,110,0,0.1)"
     line:
       color: RGBA(250,110,0,0.9)
       shape: line
       width: 2
     x:
-      - $ex hass.states["number.room_zone2_x"].state*1
+      - $ex hass.states["number.hpsz_room_zone2_x"].state*1
       - >-
-        $ex hass.states["number.room_zone2_x"].state*1 -
-        hass.states["number.room_zone2_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone2_x"].state*1 -
+        hass.states["number.hpsz_room_zone2_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone2_x"].state*1 -
-        hass.states["number.room_zone2_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zone2_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone2_x"].state*1 -
+        hass.states["number.hpsz_room_zone2_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zone2_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone2_x"].state*1 +
-        hass.states["number.room_zone2_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
-      - $ex hass.states["number.room_zone2_x"].state*1
+        $ex hass.states["number.hpsz_room_zone2_x"].state*1 +
+        hass.states["number.hpsz_room_zone2_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zone2_x"].state*1
     'y':
-      - $ex hass.states["number.room_zone2_y"].state*1
+      - $ex hass.states["number.hpsz_room_zone2_y"].state*1
       - >-
-        $ex hass.states["number.room_zone2_y"].state*1 +
-        hass.states["number.room_zone2_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone2_y"].state*1 +
+        hass.states["number.hpsz_room_zone2_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone2_y"].state*1 +
-        hass.states["number.room_zone2_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zone2_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone2_y"].state*1 +
+        hass.states["number.hpsz_room_zone2_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zone2_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone2_y"].state*1 +
-        hass.states["number.room_zone2_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
-      - $ex hass.states["number.room_zone2_y"].state*1
+        $ex hass.states["number.hpsz_room_zone2_y"].state*1 +
+        hass.states["number.hpsz_room_zone2_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zone2_y"].state*1
   - entity: ''
     name: Zone3
     mode: lines
     fill: toself
     fillcolor: >-
-      $ex hass.states["binary_sensor.room_zone3_presence"].state == "on" ?
+      $ex hass.states["binary_sensor.hpsz_room_zone3_presence"].state == "on" ?
       "RGBA(0,0,250,0.4)" : "RGBA(0,0,250,0.1)"
     line:
       color: RGBA(0,0,250,0.9)
       shape: line
       width: 2
     x:
-      - $ex hass.states["number.room_zone3_x"].state*1
+      - $ex hass.states["number.hpsz_room_zone3_x"].state*1
       - >-
-        $ex hass.states["number.room_zone3_x"].state*1 -
-        hass.states["number.room_zone3_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone3_x"].state*1 -
+        hass.states["number.hpsz_room_zone3_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone3_x"].state*1 -
-        hass.states["number.room_zone3_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zone3_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone3_x"].state*1 -
+        hass.states["number.hpsz_room_zone3_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zone3_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone3_x"].state*1 +
-        hass.states["number.room_zone3_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
-      - $ex hass.states["number.room_zone3_x"].state*1
+        $ex hass.states["number.hpsz_room_zone3_x"].state*1 +
+        hass.states["number.hpsz_room_zone3_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zone3_x"].state*1
     'y':
-      - $ex hass.states["number.room_zone3_y"].state*1
+      - $ex hass.states["number.hpsz_room_zone3_y"].state*1
       - >-
-        $ex hass.states["number.room_zone3_y"].state*1 +
-        hass.states["number.room_zone3_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone3_y"].state*1 +
+        hass.states["number.hpsz_room_zone3_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone3_y"].state*1 +
-        hass.states["number.room_zone3_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zone3_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone3_y"].state*1 +
+        hass.states["number.hpsz_room_zone3_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zone3_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone3_y"].state*1 +
-        hass.states["number.room_zone3_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
-      - $ex hass.states["number.room_zone3_y"].state*1
+        $ex hass.states["number.hpsz_room_zone3_y"].state*1 +
+        hass.states["number.hpsz_room_zone3_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zone3_y"].state*1
   - entity: ''
     name: Zone4
     mode: lines
     fill: toself
     fillcolor: >-
-      $ex hass.states["binary_sensor.room_zone4_presence"].state == "on" ?
+      $ex hass.states["binary_sensor.hpsz_room_zone4_presence"].state == "on" ?
       "RGBA(250,210,0,0.4)" : "RGBA(250,210,0,0.1)"
     line:
       color: RGBA(250,210,0,0.9)
       shape: line
       width: 2
     x:
-      - $ex hass.states["number.room_zone4_x"].state*1
+      - $ex hass.states["number.hpsz_room_zone4_x"].state*1
       - >-
-        $ex hass.states["number.room_zone4_x"].state*1 -
-        hass.states["number.room_zone4_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone4_x"].state*1 -
+        hass.states["number.hpsz_room_zone4_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone4_x"].state*1 -
-        hass.states["number.room_zone4_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zone4_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone4_x"].state*1 -
+        hass.states["number.hpsz_room_zone4_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zone4_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone4_x"].state*1 +
-        hass.states["number.room_zone4_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
-      - $ex hass.states["number.room_zone4_x"].state*1
+        $ex hass.states["number.hpsz_room_zone4_x"].state*1 +
+        hass.states["number.hpsz_room_zone4_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zone4_x"].state*1
     'y':
-      - $ex hass.states["number.room_zone4_y"].state*1
+      - $ex hass.states["number.hpsz_room_zone4_y"].state*1
       - >-
-        $ex hass.states["number.room_zone4_y"].state*1 +
-        hass.states["number.room_zone4_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone4_y"].state*1 +
+        hass.states["number.hpsz_room_zone4_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone4_y"].state*1 +
-        hass.states["number.room_zone4_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zone4_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone4_y"].state*1 +
+        hass.states["number.hpsz_room_zone4_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zone4_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone4_y"].state*1 +
-        hass.states["number.room_zone4_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
-      - $ex hass.states["number.room_zone4_y"].state*1
+        $ex hass.states["number.hpsz_room_zone4_y"].state*1 +
+        hass.states["number.hpsz_room_zone4_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zone4_y"].state*1
   - entity: ''
     name: Zone5
     mode: lines
     fill: toself
     fillcolor: >-
-      $ex hass.states["binary_sensor.room_zone5_presence"].state == "on" ?
+      $ex hass.states["binary_sensor.hpsz_room_zone5_presence"].state == "on" ?
       "RGBA(0,150,0,0.4)" : "RGBA(0,150,0,0.1)"
     line:
       color: RGBA(0,150,0,0.9)
       shape: line
       width: 2
     x:
-      - $ex hass.states["number.room_zone5_x"].state*1
+      - $ex hass.states["number.hpsz_room_zone5_x"].state*1
       - >-
-        $ex hass.states["number.room_zone5_x"].state*1 -
-        hass.states["number.room_zone5_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone5_x"].state*1 -
+        hass.states["number.hpsz_room_zone5_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone5_x"].state*1 -
-        hass.states["number.room_zone5_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zone5_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone5_x"].state*1 -
+        hass.states["number.hpsz_room_zone5_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zone5_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone5_x"].state*1 +
-        hass.states["number.room_zone5_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
-      - $ex hass.states["number.room_zone5_x"].state*1
+        $ex hass.states["number.hpsz_room_zone5_x"].state*1 +
+        hass.states["number.hpsz_room_zone5_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zone5_x"].state*1
     'y':
-      - $ex hass.states["number.room_zone5_y"].state*1
+      - $ex hass.states["number.hpsz_room_zone5_y"].state*1
       - >-
-        $ex hass.states["number.room_zone5_y"].state*1 +
-        hass.states["number.room_zone5_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone5_y"].state*1 +
+        hass.states["number.hpsz_room_zone5_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone5_y"].state*1 +
-        hass.states["number.room_zone5_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zone5_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone5_y"].state*1 +
+        hass.states["number.hpsz_room_zone5_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zone5_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone5_y"].state*1 +
-        hass.states["number.room_zone5_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
-      - $ex hass.states["number.room_zone5_y"].state*1
+        $ex hass.states["number.hpsz_room_zone5_y"].state*1 +
+        hass.states["number.hpsz_room_zone5_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zone5_y"].state*1
   - entity: ''
     name: Zone6
     mode: lines
     fill: toself
     fillcolor: >-
-      $ex hass.states["binary_sensor.room_zone6_presence"].state == "on" ?
+      $ex hass.states["binary_sensor.hpsz_room_zone6_presence"].state == "on" ?
       "RGBA(250,50,130,0.4)" : "RGBA(250,50,130,0.1)"
     line:
       color: RGBA(250,50,130,0.9)
       shape: line
       width: 2
     x:
-      - $ex hass.states["number.room_zone6_x"].state*1
+      - $ex hass.states["number.hpsz_room_zone6_x"].state*1
       - >-
-        $ex hass.states["number.room_zone6_x"].state*1 -
-        hass.states["number.room_zone6_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone6_x"].state*1 -
+        hass.states["number.hpsz_room_zone6_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone6_x"].state*1 -
-        hass.states["number.room_zone6_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zone6_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone6_x"].state*1 -
+        hass.states["number.hpsz_room_zone6_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zone6_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone6_x"].state*1 +
-        hass.states["number.room_zone6_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
-      - $ex hass.states["number.room_zone6_x"].state*1
+        $ex hass.states["number.hpsz_room_zone6_x"].state*1 +
+        hass.states["number.hpsz_room_zone6_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zone6_x"].state*1
     'y':
-      - $ex hass.states["number.room_zone6_y"].state*1
+      - $ex hass.states["number.hpsz_room_zone6_y"].state*1
       - >-
-        $ex hass.states["number.room_zone6_y"].state*1 +
-        hass.states["number.room_zone6_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone6_y"].state*1 +
+        hass.states["number.hpsz_room_zone6_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone6_y"].state*1 +
-        hass.states["number.room_zone6_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zone6_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zone6_y"].state*1 +
+        hass.states["number.hpsz_room_zone6_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zone6_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zone6_y"].state*1 +
-        hass.states["number.room_zone6_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
-      - $ex hass.states["number.room_zone6_y"].state*1
+        $ex hass.states["number.hpsz_room_zone6_y"].state*1 +
+        hass.states["number.hpsz_room_zone6_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zone6_y"].state*1
   - entity: ''
     name: Zout1
     mode: lines
     fill: toself
     fillcolor: >-
-      $ex hass.states["switch.room_zout1_enable"].state == "on" ?
-      hass.states["binary_sensor.room_zout1_presence"].state == "on" ?
+      $ex hass.states["switch.hpsz_room_zout1_enable"].state == "on" ?
+      hass.states["binary_sensor.hpsz_room_zout1_presence"].state == "on" ?
       "RGBA(250,0,0,0.4)" : "RGBA(250,0,0,0.2)" : "RGBA(0,0,0,0)"
     line:
       color: >-
-        $ex hass.states["switch.room_zout1_enable"].state == "on" ?
+        $ex hass.states["switch.hpsz_room_zout1_enable"].state == "on" ?
         "RGBA(0,150,0,0.9)" : "RGBA(0,0,0,0)" 
       width: 3
       dash: dash
     x:
-      - $ex hass.states["number.room_zout1_x"].state*1
+      - $ex hass.states["number.hpsz_room_zout1_x"].state*1
       - >-
-        $ex hass.states["number.room_zout1_x"].state*1 -
-        hass.states["number.room_zout1_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zout1_x"].state*1 -
+        hass.states["number.hpsz_room_zout1_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zout1_x"].state*1 -
-        hass.states["number.room_zout1_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zout1_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zout1_x"].state*1 -
+        hass.states["number.hpsz_room_zout1_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zout1_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zout1_x"].state*1 +
-        hass.states["number.room_zout1_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
-      - $ex hass.states["number.room_zout1_x"].state*1
+        $ex hass.states["number.hpsz_room_zout1_x"].state*1 +
+        hass.states["number.hpsz_room_zout1_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zout1_x"].state*1
     'y':
-      - $ex hass.states["number.room_zout1_y"].state*1
+      - $ex hass.states["number.hpsz_room_zout1_y"].state*1
       - >-
-        $ex hass.states["number.room_zout1_y"].state*1 +
-        hass.states["number.room_zout1_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zout1_y"].state*1 +
+        hass.states["number.hpsz_room_zout1_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zout1_y"].state*1 +
-        hass.states["number.room_zout1_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zout1_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zout1_y"].state*1 +
+        hass.states["number.hpsz_room_zout1_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zout1_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zout1_y"].state*1 +
-        hass.states["number.room_zout1_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
-      - $ex hass.states["number.room_zout1_y"].state*1
+        $ex hass.states["number.hpsz_room_zout1_y"].state*1 +
+        hass.states["number.hpsz_room_zout1_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zout1_y"].state*1
   - entity: ''
     name: Zout2
     mode: lines
     fill: toself
     fillcolor: >-
-      $ex hass.states["switch.room_zout2_enable"].state == "on" ?
-      hass.states["binary_sensor.room_zout2_presence"].state == "on" ?
+      $ex hass.states["switch.hpsz_room_zout2_enable"].state == "on" ?
+      hass.states["binary_sensor.hpsz_room_zout2_presence"].state == "on" ?
       "RGBA(250,0,0,0.4)" : "RGBA(250,0,0,0.2)" : "RGBA(0,0,0,0)"
     line:
       color: >-
-        $ex hass.states["switch.room_zout2_enable"].state == "on" ?
+        $ex hass.states["switch.hpsz_room_zout2_enable"].state == "on" ?
         "RGBA(250,110,0,0.9)" : "RGBA(0,0,0,0)" 
       width: 3
       dash: dash
     x:
-      - $ex hass.states["number.room_zout2_x"].state*1
+      - $ex hass.states["number.hpsz_room_zout2_x"].state*1
       - >-
-        $ex hass.states["number.room_zout2_x"].state*1 -
-        hass.states["number.room_zout2_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zout2_x"].state*1 -
+        hass.states["number.hpsz_room_zout2_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zout2_x"].state*1 -
-        hass.states["number.room_zout2_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zout2_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zout2_x"].state*1 -
+        hass.states["number.hpsz_room_zout2_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zout2_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zout2_x"].state*1 +
-        hass.states["number.room_zout2_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
-      - $ex hass.states["number.room_zout2_x"].state*1
+        $ex hass.states["number.hpsz_room_zout2_x"].state*1 +
+        hass.states["number.hpsz_room_zout2_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zout2_x"].state*1
     'y':
-      - $ex hass.states["number.room_zout2_y"].state*1
+      - $ex hass.states["number.hpsz_room_zout2_y"].state*1
       - >-
-        $ex hass.states["number.room_zout2_y"].state*1 +
-        hass.states["number.room_zout2_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zout2_y"].state*1 +
+        hass.states["number.hpsz_room_zout2_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zout2_y"].state*1 +
-        hass.states["number.room_zout2_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zout2_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zout2_y"].state*1 +
+        hass.states["number.hpsz_room_zout2_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zout2_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zout2_y"].state*1 +
-        hass.states["number.room_zout2_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
-      - $ex hass.states["number.room_zout2_y"].state*1
+        $ex hass.states["number.hpsz_room_zout2_y"].state*1 +
+        hass.states["number.hpsz_room_zout2_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zout2_y"].state*1
   - entity: ''
     name: Zout3
     mode: lines
     fill: toself
     fillcolor: >-
-      $ex hass.states["switch.room_zout3_enable"].state == "on" ?
-      hass.states["binary_sensor.room_zout3_presence"].state == "on" ?
+      $ex hass.states["switch.hpsz_room_zout3_enable"].state == "on" ?
+      hass.states["binary_sensor.hpsz_room_zout3_presence"].state == "on" ?
       "RGBA(250,0,0,0.4)" : "RGBA(250,0,0,0.2)" : "RGBA(0,0,0,0)"
     line:
       color: >-
-        $ex hass.states["switch.room_zout3_enable"].state == "on" ?
+        $ex hass.states["switch.hpsz_room_zout3_enable"].state == "on" ?
         "RGBA(0,0,250,0.9)" : "RGBA(0,0,0,0)" 
       width: 3
       dash: dash
     x:
-      - $ex hass.states["number.room_zout3_x"].state*1
+      - $ex hass.states["number.hpsz_room_zout3_x"].state*1
       - >-
-        $ex hass.states["number.room_zout3_x"].state*1 -
-        hass.states["number.room_zout3_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zout3_x"].state*1 -
+        hass.states["number.hpsz_room_zout3_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zout3_x"].state*1 -
-        hass.states["number.room_zout3_width"].state *
-        Math.cos((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zout3_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zout3_x"].state*1 -
+        hass.states["number.hpsz_room_zout3_width"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zout3_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zout3_x"].state*1 +
-        hass.states["number.room_zout3_height"].state *
-        Math.cos((hass.states["number.room_angle"].state*1-90)*3.1415/180)
-      - $ex hass.states["number.room_zout3_x"].state*1
+        $ex hass.states["number.hpsz_room_zout3_x"].state*1 +
+        hass.states["number.hpsz_room_zout3_height"].state *
+        Math.cos((hass.states["number.hpsz_room_angle"].state*1-90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zout3_x"].state*1
     'y':
-      - $ex hass.states["number.room_zout3_y"].state*1
+      - $ex hass.states["number.hpsz_room_zout3_y"].state*1
       - >-
-        $ex hass.states["number.room_zout3_y"].state*1 +
-        hass.states["number.room_zout3_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zout3_y"].state*1 +
+        hass.states["number.hpsz_room_zout3_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zout3_y"].state*1 +
-        hass.states["number.room_zout3_width"].state *
-        Math.sin((hass.states["number.room_angle"].state)*3.1415/180) +
-        hass.states["number.room_zout3_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
+        $ex hass.states["number.hpsz_room_zout3_y"].state*1 +
+        hass.states["number.hpsz_room_zout3_width"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state)*3.1415/180) +
+        hass.states["number.hpsz_room_zout3_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
       - >-
-        $ex hass.states["number.room_zout3_y"].state*1 +
-        hass.states["number.room_zout3_height"].state *
-        Math.sin((hass.states["number.room_angle"].state*1+90)*3.1415/180)
-      - $ex hass.states["number.room_zout3_y"].state*1
+        $ex hass.states["number.hpsz_room_zout3_y"].state*1 +
+        hass.states["number.hpsz_room_zout3_height"].state *
+        Math.sin((hass.states["number.hpsz_room_angle"].state*1+90)*3.1415/180)
+      - $ex hass.states["number.hpsz_room_zout3_y"].state*1
   - entity: ''
     name: Coverage
     mode: lines
