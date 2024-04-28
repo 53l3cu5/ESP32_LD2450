@@ -1,3 +1,6 @@
+# Réglage affiné pour le nom des entités et leurs ID
+# Un nom de substitution est donné pour les broches RX et TX du LD2450 facilitant ainsi la modification de ces dernières en fonction des branchements
+
 #https://github.com/53l3cu5/ESP32_LD2450
 #https://docs.screek.io/2a
 substitutions:
@@ -1357,6 +1360,34 @@ switch:
 #    icon: mdi:heart-broken
 #    entity_category: diagnostic
   - platform: template
+    name: ${entity_name} Target Enable
+    id: target_fn_enable
+    optimistic: True
+    icon: mdi:target-variant
+    entity_category: config
+    restore_mode: RESTORE_DEFAULT_ON
+  - platform: template
+    name: ${entity_name} Zone Enable
+    id: zone_fn_enable
+    optimistic: True
+    icon: mdi:target-variant
+    entity_category: config
+    restore_mode: RESTORE_DEFAULT_ON
+  - platform: template
+    name: ${entity_name} Target must leave Zone1
+    id: zone1_must_leave_enable
+    optimistic: True
+    icon: mdi:account-cancel
+    entity_category: config
+    restore_mode: RESTORE_DEFAULT_OFF
+  - platform: template
+    name: ${entity_name} Target must leave Zone2
+    id: zone2_must_leave_enable
+    optimistic: True
+    icon: mdi:account-cancel
+    entity_category: config
+    restore_mode: RESTORE_DEFAULT_OFF
+  - platform: template
     name: ${entity_name} Zout1 Enable
     id: zone_ex1_enable
     optimistic: True
@@ -1377,20 +1408,6 @@ switch:
     icon: mdi:account-cancel
     entity_category: config
     restore_mode: RESTORE_DEFAULT_OFF
-  - platform: template
-    name: ${entity_name} Target Enable
-    id: target_fn_enable
-    optimistic: True
-    icon: mdi:target-variant
-    entity_category: config
-    restore_mode: RESTORE_DEFAULT_ON
-  - platform: template
-    name: ${entity_name} Zone Enable
-    id: zone_fn_enable
-    optimistic: True
-    icon: mdi:target-variant
-    entity_category: config
-    restore_mode: RESTORE_DEFAULT_ON
   - platform: template
     name: ${entity_name} Illuminance Fast-Update
     id: bh1750_fast_update
@@ -1439,6 +1456,8 @@ uart:
           static template_::TemplateBinarySensor* zone_target_exist[] = {id(zone1_target_exist), id(zone2_target_exist), id(zone3_target_exist), id(zone4_target_exist), id(zone5_target_exist), id(zone6_target_exist)};
           // static template_::TemplateTextSensor* tips_zone_conf[] = {id(tips_zone1_conf), id(tips_zone2_conf), id(tips_zone3_conf), id(tips_zone4_conf), id(tips_zone5_conf), id(tips_zone6_conf)};
           const int NUM_ZONES = 6;
+          static template_::TemplateSwitch* zone_must_leave_enable[] = {id(zone1_must_leave_enable), id(zone2_must_leave_enable)};
+          const int NUM_ZONES_MUST_LEAVE = 2;
           static template_::TemplateSwitch* zone_ex_enable[] = {id(zone_ex1_enable), id(zone_ex2_enable), id(zone_ex3_enable)};
           static template_::TemplateNumber* zone_ex_x[] = {id(zone_ex1_x), id(zone_ex2_x), id(zone_ex3_x)};
           static template_::TemplateNumber* zone_ex_y[] = {id(zone_ex1_y), id(zone_ex2_y), id(zone_ex3_y)};
@@ -1510,11 +1529,14 @@ uart:
                   if (check_targets_in_zone(zone_ex[i], p[j], angle)){
                     zone_ex[i].target_count++;
                     p[j].zone_ex_enter = true;
+                  } else { 
+                    zone_ex[i].outside_target_count++;
                   }
                 }
               }
             }
             zone_ex[i].has_target = (zone_ex[i].target_count > 0);
+            zone_ex[i].has_target_outside = (zone_ex[i].outside_target_count > 0);
           }
           
           // all targets
@@ -1541,10 +1563,13 @@ uart:
                 if (p[j].valide && !p[j].zone_ex_enter){
                   if(check_targets_in_zone(zone[i], p[j], angle)) {
                     zone[i].target_count++;
+                  } else { 
+                    zone[i].outside_target_count++;
                   }
                 }
               }
               zone[i].has_target = (zone[i].target_count > 0);
+              zone[i].has_target_outside = (zone[i].outside_target_count > 0);
             }
           }
 
@@ -1604,12 +1629,19 @@ uart:
             id(any_target_exist).publish_state(has_target_in_zone_all);
           }
 
+          bool pub;
           for (int i = 0; i < NUM_ZONES; i++) {
             if (zone_target_count[i]->state != zone[i].target_count){
-              zone_target_count[i]->publish_state(zone[i].target_count);
-              zone_target_exist[i]->publish_state(zone[i].has_target);
-            }else if (zone_target_exist[i]->state != zone[i].has_target){
-              zone_target_exist[i]->publish_state(zone[i].has_target);
+              pub = false;
+              if (i >= NUM_ZONES_MUST_LEAVE)
+                pub = true;
+              else if ((!zone_must_leave_enable[i]->state) || (zone_must_leave_enable[i]->state && (zone[i].has_target || zone[i].has_target_outside))) {
+                pub = true;
+              }
+              if (pub) {
+                zone_target_count[i]->publish_state(zone[i].target_count);
+                zone_target_exist[i]->publish_state(zone[i].has_target);
+              }
             }
           }
           for (int i = 0; i < NUM_ZONES_EX; i++) {
