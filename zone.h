@@ -1,5 +1,10 @@
 #include <cmath>
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <iomanip>
+#include <algorithm>
+#include <cctype>
 
 struct Position {
   int16_t x; 
@@ -18,7 +23,9 @@ struct Zone {
   int16_t height;
   int16_t width;
   int16_t target_count = 0;
+  int16_t outside_target_count = 0;
   bool has_target = false;
+  bool has_target_outside = false;
   
   // template_::TemplateTextSensor* tips_conf;
   // std::string name = "Zone";
@@ -65,4 +72,12 @@ bool check_targets_in_zone(struct Zone &z, struct Position &t, float angle) {
     isInside = true;
   }
   return isInside;
+}
+
+bool to_bool(std::basic_string<char> str) {
+    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
+    std::istringstream is(str);
+    bool b;
+    is >> std::boolalpha >> b;
+    return b;
 }
