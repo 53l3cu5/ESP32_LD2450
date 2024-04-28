@@ -7,6 +7,7 @@ This project aims to use an ESP32 with Home assistant and the LD2450 millimeter 
 - The positioning of the zones no longer works with the same system. Before there was a minimum X and Y zone and a maximum X and Y zone. Now there is just an X and Y position with a length and width
 - Each sensor entity now has the name of the room in which it is integrated. You must choose the name of this room manually. (entity_name: "Room")
 - The chart is more interactive. Whether the target is displayed or not, when someone is in an area, it becomes more colorful.
+- I added the Target must leave ZoneX option for zones 1 and 2. Once enabled, this option changes the behavior of the zone. The target will need to leave the area for it to be deactivated. But if the target remains in the zone without moving to the point of no longer being detected, the zone will remain active.
 
 <picture>
  <img alt="map 0°" src="https://forum.hacf.fr/uploads/default/original/3X/9/f/9f0e7d34a22281a5f8b7d2b3c38dd49ec131d3c6.gif">
