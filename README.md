@@ -13,7 +13,7 @@ This project aims to use an ESP32 with Home assistant and the LD2450 millimeter 
 <br/>
 <br/>
 <picture>
- <img alt="map 0°" src="https://forum.hacf.fr/uploads/default/original/3X/9/f/9f0e7d34a22281a5f8b7d2b3c38dd49ec131d3c6.gif">
+ <img alt="map 0°" width=50% height=50% src="https://forum.hacf.fr/uploads/default/original/3X/9/f/9f0e7d34a22281a5f8b7d2b3c38dd49ec131d3c6.gif">
 </picture>  <br/><br/>
 In the example above, <b>Zout1</b> is a fridge and triggering it could cause a false positive. <b>Zout2</b> and <b>3</b> are windows equipped with curtains. I added an automation in Home Assistant which only activates these two exclusion zones when the windows are open, thus preventing the curtains from being detected as a false positive due to the wind.
 <br/><br/>
@@ -21,11 +21,11 @@ In the example above, <b>Zout1</b> is a fridge and triggering it could cause a f
 <br/><br/>
 The light gray dotted area represents the approximate detection area of the sensor. Its pear-shaped pattern comes from the HLK datasheet. It allows us to understand that the optimal detection zone is 6 meters but that we can go a little further in practice.  <br/><br/>
 <picture>
- <img alt="map 45°" src="https://forum.hacf.fr/uploads/default/original/3X/c/5/c5b53d535f0624cc30aa5af48a753b4861e7bcb1.gif">
+ <img alt="map 45°" width=50% height=50% src="https://forum.hacf.fr/uploads/default/original/3X/c/5/c5b53d535f0624cc30aa5af48a753b4861e7bcb1.gif">
 </picture> <br/><br/>
 In the example above, the `angle` field has been set to 45 degrees and the sensor placed in a corner of the room.<br/><br/>
 <picture>
- <img alt="map 45°" src="https://forum.hacf.fr/uploads/default/original/3X/a/c/ac119a3e2397fd6de3c51ad5e6792b7eb1b63be0.gif">
+ <img alt="map 45° and leave" src="https://forum.hacf.fr/uploads/default/original/3X/a/c/ac119a3e2397fd6de3c51ad5e6792b7eb1b63be0.gif">
 </picture> <br/><br/>
 The example above uses the same conditions as the previous example but limiting the number of detection zones to two. In addition, the `Target must leave` option has been activated for zone 2.
 When the sensor stops detecting the target in zone 2 (even though it has not left it), the zone remains active.
