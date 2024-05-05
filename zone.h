@@ -86,3 +86,14 @@ bool to_bool(std::basic_string<char> str) {
     is >> std::boolalpha >> b;
     return b;
 }
+
+void check_zone_valid(int x, int y, int width, int height, template_::TemplateTextSensor* tips_conf){
+    if (x == 0 && width == 0 && y == 0 && height == 0){
+        tips_conf->publish_state("Configure below");
+        return;
+    }
+
+    char combined[80]; 
+    sprintf(combined, "Curr Size: %d x %d", width, height);
+    tips_conf->publish_state(combined);
+}
