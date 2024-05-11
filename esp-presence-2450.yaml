@@ -45,8 +45,6 @@ preferences:
 
 esp32:
   board: esp32dev
-  framework:
-    type: esp-idf
 
 globals:
   - id: last_update_ld2450
