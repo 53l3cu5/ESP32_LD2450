@@ -36,22 +36,27 @@ struct Pxy {
   int16_t y;
 };
 
+
+float toRadians(float degrees){
+    return degrees * M_PI / 180.0;
+}
+
 // Définition de la fonction pour vérifier les cibles dans une zone donnée
 bool check_targets_in_zone(struct Zone &z, struct Position &t, float angle) {
   struct Pxy p1, p2, p3, p4;
   float d12, d14, d15, d23, d25, d34, d35, d45; 
   float a152, a154, a253, a354, a_sum;
-  float TAU = 6.283185; // 2*PI
+  float TAU = 2 * M_PI;//6.283185; // 2*PI
   bool isInside = false;
   
   p1.x = z.x;
   p1.y = z.y;
-  p2.x = z.x - z.width * cos(angle*PI/180);
-  p2.y = z.y + z.width * sin(angle*PI/180);
-  p3.x = z.x - z.width * cos(angle*PI/180) + z.height * cos((angle-90)*PI/180);
-  p3.y = z.y + z.width * sin(angle*PI/180) + z.height * sin((angle+90)*PI/180);
-  p4.x = z.x + z.height * cos((angle-90)*PI/180);
-  p4.y = z.y + z.height * sin((angle+90)*PI/180);
+  p2.x = z.x - z.width * cos(toRadians(angle));
+  p2.y = z.y + z.width * sin(toRadians(angle));
+  p3.x = z.x - z.width * cos(toRadians(angle)) + z.height * cos(toRadians(angle - 90));
+  p3.y = z.y + z.width * sin(toRadians(angle)) + z.height * sin(toRadians(angle + 90));
+  p4.x = z.x + z.height * cos(toRadians(angle - 90));;
+  p4.y = z.y + z.height * sin(toRadians(angle + 90));;
   
   d15 = sqrt(pow(p1.x-t.x,2)+pow(p1.y-t.y,2));
   d25 = sqrt(pow(p2.x-t.x,2)+pow(p2.y-t.y,2));
@@ -80,4 +85,15 @@ bool to_bool(std::basic_string<char> str) {
     bool b;
     is >> std::boolalpha >> b;
     return b;
+}
+
+void check_zone_valid(int x, int y, int width, int height, template_::TemplateTextSensor* tips_conf){
+    if (x == 0 && width == 0 && y == 0 && height == 0){
+        tips_conf->publish_state("Configure below");
+        return;
+    }
+
+    char combined[80]; 
+    sprintf(combined, "Curr Size: %d x %d", width, height);
+    tips_conf->publish_state(combined);
 }

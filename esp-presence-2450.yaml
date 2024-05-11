@@ -340,7 +340,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone1_valide
+        - lambda: check_zone_valid(id(zone1_x).state, id(zone1_y).state, id(zone1_width).state, id(zone1_height).state, tips_zone1_conf);
   - platform: template
     name: ${entity_name} Zone1 Y
     id: zone1_y
@@ -357,7 +357,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone1_valide
+        - lambda: check_zone_valid(id(zone1_x).state, id(zone1_y).state, id(zone1_width).state, id(zone1_height).state, tips_zone1_conf);
   - platform: template
     name: ${entity_name} Zone1 Height
     id: zone1_height
@@ -374,7 +374,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone1_valide
+        - lambda: check_zone_valid(id(zone1_x).state, id(zone1_y).state, id(zone1_width).state, id(zone1_height).state, tips_zone1_conf);
   - platform: template
     name: ${entity_name} Zone1 Width
     id: zone1_width
@@ -391,7 +391,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone1_valide
+        - lambda: check_zone_valid(id(zone1_x).state, id(zone1_y).state, id(zone1_width).state, id(zone1_height).state, tips_zone1_conf);
     
   # Zone 2
   - platform: template
@@ -410,7 +410,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone2_valide
+        - lambda: check_zone_valid(id(zone2_x).state, id(zone2_y).state, id(zone2_width).state, id(zone2_height).state, tips_zone2_conf);
   - platform: template
     name: ${entity_name} Zone2 Y
     id: zone2_y
@@ -427,7 +427,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone2_valide
+        - lambda: check_zone_valid(id(zone2_x).state, id(zone2_y).state, id(zone2_width).state, id(zone2_height).state, tips_zone2_conf);
   - platform: template
     name: ${entity_name} Zone2 Height
     id: zone2_height
@@ -444,7 +444,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone2_valide
+        - lambda: check_zone_valid(id(zone2_x).state, id(zone2_y).state, id(zone2_width).state, id(zone2_height).state, tips_zone2_conf);
   - platform: template
     name: ${entity_name} Zone2 Width
     id: zone2_width
@@ -461,7 +461,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone2_valide
+        - lambda: check_zone_valid(id(zone2_x).state, id(zone2_y).state, id(zone2_width).state, id(zone2_height).state, tips_zone2_conf);
     
   # Zone 3
   - platform: template
@@ -480,7 +480,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone3_valide
+        - lambda: check_zone_valid(id(zone3_x).state, id(zone3_y).state, id(zone3_width).state, id(zone3_height).state, tips_zone3_conf);
   - platform: template
     name: ${entity_name} Zone3 Y
     id: zone3_y
@@ -497,7 +497,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone3_valide
+        - lambda: check_zone_valid(id(zone3_x).state, id(zone3_y).state, id(zone3_width).state, id(zone3_height).state, tips_zone3_conf);
   - platform: template
     name: ${entity_name} Zone3 Height
     id: zone3_height
@@ -514,7 +514,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone3_valide
+        - lambda: check_zone_valid(id(zone3_x).state, id(zone3_y).state, id(zone3_width).state, id(zone3_height).state, tips_zone3_conf);
   - platform: template
     name: ${entity_name} Zone3 Width
     id: zone3_width
@@ -531,7 +531,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone3_valide
+        - lambda: check_zone_valid(id(zone3_x).state, id(zone3_y).state, id(zone3_width).state, id(zone3_height).state, tips_zone3_conf);
     
   # Zone 4
   - platform: template
@@ -550,7 +550,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone4_valide
+        - lambda: check_zone_valid(id(zone4_x).state, id(zone4_y).state, id(zone4_width).state, id(zone4_height).state, tips_zone4_conf);
   - platform: template
     name: ${entity_name} Zone4 Y
     id: zone4_y
@@ -567,7 +567,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone4_valide
+        - lambda: check_zone_valid(id(zone4_x).state, id(zone4_y).state, id(zone4_width).state, id(zone4_height).state, tips_zone4_conf);
   - platform: template
     name: ${entity_name} Zone4 Height
     id: zone4_height
@@ -584,7 +584,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone4_valide
+        - lambda: check_zone_valid(id(zone4_x).state, id(zone4_y).state, id(zone4_width).state, id(zone4_height).state, tips_zone4_conf);
   - platform: template
     name: ${entity_name} Zone4 Width
     id: zone4_width
@@ -601,7 +601,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone4_valide
+        - lambda: check_zone_valid(id(zone4_x).state, id(zone4_y).state, id(zone4_width).state, id(zone4_height).state, tips_zone4_conf);
     
   # Zone 5
   - platform: template
@@ -620,7 +620,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone5_valide
+        - lambda: check_zone_valid(id(zone5_x).state, id(zone5_y).state, id(zone5_width).state, id(zone5_height).state, tips_zone5_conf);
   - platform: template
     name: ${entity_name} Zone5 Y
     id: zone5_y
@@ -637,7 +637,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone5_valide
+        - lambda: check_zone_valid(id(zone5_x).state, id(zone5_y).state, id(zone5_width).state, id(zone5_height).state, tips_zone5_conf);
   - platform: template
     name: ${entity_name} Zone5 Height
     id: zone5_height
@@ -654,7 +654,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone5_valide
+        - lambda: check_zone_valid(id(zone5_x).state, id(zone5_y).state, id(zone5_width).state, id(zone5_height).state, tips_zone5_conf);
   - platform: template
     name: ${entity_name} Zone5 Width
     id: zone5_width
@@ -671,7 +671,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone5_valide
+        - lambda: check_zone_valid(id(zone5_x).state, id(zone5_y).state, id(zone5_width).state, id(zone5_height).state, tips_zone5_conf);
     
   # Zone 6
   - platform: template
@@ -690,7 +690,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone6_valide
+        - lambda: check_zone_valid(id(zone6_x).state, id(zone6_y).state, id(zone6_width).state, id(zone6_height).state, tips_zone6_conf);
   - platform: template
     name: ${entity_name} Zone6 Y
     id: zone6_y
@@ -707,7 +707,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone6_valide
+        - lambda: check_zone_valid(id(zone6_x).state, id(zone6_y).state, id(zone6_width).state, id(zone6_height).state, tips_zone6_conf);
   - platform: template
     name: ${entity_name} Zone6 Height
     id: zone6_height
@@ -724,7 +724,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone6_valide
+        - lambda: check_zone_valid(id(zone6_x).state, id(zone6_y).state, id(zone6_width).state, id(zone6_height).state, tips_zone6_conf);
   - platform: template
     name: ${entity_name} Zone6 Width
     id: zone6_width
@@ -741,7 +741,7 @@ number:
     restore_value: True
     on_value: 
       then:
-        - script.execute: check_zone6_valide
+        - lambda: check_zone_valid(id(zone6_x).state, id(zone6_y).state, id(zone6_width).state, id(zone6_height).state, tips_zone6_conf);
     
   # Zout1
   - platform: template
@@ -1044,90 +1044,6 @@ binary_sensor:
     device_class: occupancy
 
 script:
-  - id: check_zone1_valide
-    then:
-      - lambda: |-
-          if (id(zone1_x).state == 0 && id(zone1_width).state == 0 && id(zone1_y).state == 0 && id(zone1_height).state == 0){
-            id(tips_zone1_conf).publish_state("Configure below");
-            return;
-          }
-
-          int x_size = id(zone1_width).state;
-          int y_size = id(zone1_height).state;
-
-          char combined[80]; 
-          sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
-          id(tips_zone1_conf).publish_state(combined);
-  - id: check_zone2_valide
-    then:
-      - lambda: |-
-          if (id(zone2_x).state == 0 && id(zone2_width).state == 0 && id(zone2_y).state == 0 && id(zone2_height).state == 0){
-            id(tips_zone2_conf).publish_state("Configure below");
-            return;
-          }
-
-          int x_size = id(zone2_width).state;
-          int y_size = id(zone2_height).state;
-
-          char combined[80]; 
-          sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
-          id(tips_zone2_conf).publish_state(combined);
-  - id: check_zone3_valide
-    then:
-      - lambda: |-
-          if (id(zone3_x).state == 0 && id(zone3_width).state == 0 && id(zone3_y).state == 0 && id(zone3_height).state == 0){
-            id(tips_zone3_conf).publish_state("Configure below");
-            return;
-          }
-
-          int x_size = id(zone3_width).state;
-          int y_size = id(zone3_height).state ;
-
-          char combined[80]; 
-          sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
-          id(tips_zone3_conf).publish_state(combined);
-  - id: check_zone4_valide
-    then:
-      - lambda: |-
-          if (id(zone4_x).state == 0 && id(zone4_width).state == 0 && id(zone4_y).state == 0 && id(zone4_height).state == 0){
-            id(tips_zone4_conf).publish_state("Configure below");
-            return;
-          }
-
-          int x_size = id(zone4_width).state;
-          int y_size = id(zone4_height).state;
-
-          char combined[80]; 
-          sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
-          id(tips_zone4_conf).publish_state(combined);
-  - id: check_zone5_valide
-    then:
-      - lambda: |-
-          if (id(zone5_x).state == 0 && id(zone5_width).state == 0 && id(zone5_y).state == 0 && id(zone5_height).state == 0){
-            id(tips_zone5_conf).publish_state("Configure below");
-            return;
-          }
-
-          int x_size = id(zone5_width).state;
-          int y_size = id(zone5_height).state;
-
-          char combined[80]; 
-          sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
-          id(tips_zone5_conf).publish_state(combined);
-  - id: check_zone6_valide
-    then:
-      - lambda: |-
-          if (id(zone6_x).state == 0 && id(zone6_width).state == 0 && id(zone6_y).state == 0 && id(zone6_height).state == 0){
-            id(tips_zone6_conf).publish_state("Configure below");
-            return;
-          }
-
-          int x_size = id(zone6_width).state;
-          int y_size = id(zone6_height).state;
-
-          char combined[80]; 
-          sprintf(combined, "Curr Size: %d x %d", x_size, y_size);
-          id(tips_zone6_conf).publish_state(combined);
   - id: check_zout1_valide
     then:
       - lambda: |-
