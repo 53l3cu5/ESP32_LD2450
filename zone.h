@@ -97,3 +97,9 @@ void check_zone_valid(int x, int y, int width, int height, template_::TemplateTe
     sprintf(combined, "Curr Size: %d x %d", width, height);
     tips_conf->publish_state(combined);
 }
+
+void check_zout_valid(int z, template_::TemplateTextSensor* tips_conf){
+    char combined[40]; 
+    sprintf(combined, "Zone Exclusion %d", z);
+    tips_conf->publish_state(combined);
+}
