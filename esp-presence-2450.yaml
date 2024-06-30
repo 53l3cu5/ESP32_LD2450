@@ -67,9 +67,9 @@ api:
     key: "Xd8KczJ8qKVYtAjyh3zVPar7zF8pkmZeOpnHSfjOqwA="
     
 ota:
+  platform: esphome
   # use your own ota password plz.
   password: !secret ota_password
-  safe_mode: False
 
 wifi:
   ssid: !secret wifi_ssid
