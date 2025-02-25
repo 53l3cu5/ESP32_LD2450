@@ -1,3 +1,8 @@
+<b>This project is no longer maintained.</b><br/>
+If you want to improve the code, you can make suggestions.<br/>
+<b>All troubleshooting requests will be automatically ignored and closed</b>
+
+
 This project aims to use an ESP32 with Home assistant and the LD2450 millimeter wave sensor. It is based on the work of Screek and has been improved in many areas:
 - I doubled the number of detection zones. There are 6 of them.
 - I added two more exclusion zones. There are 3 of them.
